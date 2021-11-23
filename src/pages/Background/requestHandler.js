@@ -1,11 +1,10 @@
-import { findJWT, save, send } from './utilities'
-
-const apiURL = "http://localhost:3001/"
+import { save, send, ourURL } from './utilities'
+import { JWT, findJWT } from './jwt'
 
 
 const processRequest = (req, match) => {
     console.log('JWT FOUND', req.url, match)
-    const data = [req.url, 'R', req.type, match]
+    const data = JWT(match, { url: req.url, type: 'R', name: req.type })
     save(data)
     send(data)
 }
@@ -17,7 +16,7 @@ const decodeRaw = (raw) => {
 }
 
 const onBeforeRequestHandler = req => {
-    if (req.url === apiURL) {
+    if (ourURL(req.url)) {
         return
     }
     if (req.method === 'POST') {
