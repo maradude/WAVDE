@@ -22,9 +22,9 @@ const onBeforeRequestHandler = req => {
     if (req.method === 'POST') {
         console.debug("POST sent")
     }
-    const urlMatch = findJWT(req.url)
-    if (urlMatch !== null) {
-        processRequest(req, urlMatch)
+    if (req.requestBody?.formData) {
+        console.log(req.url, " formData: ", req.requestBody.formData)
+        console.log(req.url, " raw: ", decodeRaw(req.requestBody?.raw))
     }
     if (req.requestBody?.raw) {
         const rawMatch = findJWT(decodeRaw(req.requestBody.raw))
