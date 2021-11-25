@@ -26,9 +26,7 @@ const TransformingCell = ({ cname, content }) => {
         </>
     }
 
-    console.log(content)
-
-    return <td className={cname} onClick={toggleDecode}>
+    return <td className={cname} onDoubleClick={toggleDecode}>
         {show(content, isDecoded)}
     </td>
 }
