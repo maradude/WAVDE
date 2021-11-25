@@ -3,8 +3,8 @@ import { JWT, findJWT } from './jwt'
 
 
 const processRequest = (req, match) => {
-    console.log('JWT FOUND', req.url, match)
     const data = JWT(match, { url: req.url, type: 'R', name: req.type })
+    console.log('JWT FOUND', data)
     save(data)
     send(data)
 }
