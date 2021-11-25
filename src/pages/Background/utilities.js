@@ -17,10 +17,13 @@ const send = async (data) => {
     }
 }
 
-const save = async (data) => {
-    const stored = await chrome.storage.local.get({ 'bening': [] })
-    stored['bening'].push(data)
+const save = async (data, key = 'benign-success') => {
+    const defaultOpt =  {}
+    defaultOpt[key] = []
+    const stored = await chrome.storage.local.get(defaultOpt)
+    stored[key].push(data)
     chrome.storage.local.set(stored)
 }
+
 
 export { save, send, ourURL }

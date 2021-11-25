@@ -1,29 +1,60 @@
-const JWTRe = /([A-Za-z0-9-_]{10,})\.([A-Za-z0-9-_]*)\.([A-Za-z0-9-_]*)/ // match JWT, group by section, only header mandatory
+import {save} from './utilities'
 
-const findJWT = (candidate) => {
+const JWTRe = /([A-Za-z0-9-_]{4,})\.([A-Za-z0-9-_]*)\.([A-Za-z0-9-_]*)/g // match JWT, group by section, only header mandatory
+
+const bareminimum = /(\..*\..*)/
+
+
+const isURIEncoded = uri => {
     try {
-        const match = JWTRe.exec(candidate)
-        if (match !== null) {
-            JSON.parse(atob(match[1]))
-            return match[0]
+        return uri !== decodeURIComponent(uri || '')
+    } catch (error) {
+        if (error instanceof URIError) {
+            return false
         }
-    } catch (e) {
-        console.groupCollapsed(`failed candidate sample: ${candidate.slice(0,25)} ...`)
-        console.log(candidate)
-        console.debug(e)
-        console.groupEnd()
+        throw error
     }
-    return null
 }
 
-const JWT = (value, {url, type, name, httpOnly = 'n/a'} = {}) => {
+const tryToDecodeURI = url => {
+    let tries = 0;
+    while (isURIEncoded(url) && tries++ < 30) {
+        url = decodeURIComponent(url)
+    }
+    return url
+}
+
+const findJWT = (candidate) => {
+    if (isURIEncoded(candidate)) {
+        candidate = tryToDecodeURI(candidate)
+    }
+
+    const res = []
+    let match;
+    while ((match = JWTRe.exec(candidate)) !== null) {
+        try {
+            JSON.parse(atob(match[1]))
+            res.push(match[0])
+        } catch (e) {
+            console.groupCollapsed(`failed match: ${match[0].slice(0, 25)} ...`)
+            console.log("full: ", candidate)
+            console.debug(e)
+            console.groupEnd()
+        }
+    }
+    if (res.length === 0) {
+        save(candidate, 'benign-fail')
+    }
+    return res
+}
+
+const JWT = (value, { url, type, name } = {}) => {
     return {
         value,
         url,
         type,
         name,
-        httpOnly
     }
 }
 
-export {JWT, findJWT}
+export { JWT, findJWT }

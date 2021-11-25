@@ -5,9 +5,10 @@ import './Receiver.css'
 
 const Receiver = () => {
     const [msgs, setMsgs] = useState([])
+    const matchKey = 'benign-success'
 
     const onMessage = (changes, areaName) => {
-        const changed = changes['bening'].newValue
+        const changed = changes[matchKey].newValue
         if (void 0 !== changed) {
             setMsgs(changed)
         }
@@ -15,13 +16,17 @@ const Receiver = () => {
     }
 
     const clear = () => {
-        chrome.storage.local.clear()
+        const options = {}
+        options[matchKey] = []
+        chrome.storage.local.set(options)
         setMsgs([])
     }
 
     useEffect(async () => {
-        const data = await chrome.storage.local.get({ 'bening': [] })
-        setMsgs(data['bening'])
+        const defaultOpts = {}
+        defaultOpts[matchKey] = []
+        const data = await chrome.storage.local.get(defaultOpts)
+        setMsgs(data[matchKey])
     }, [])
 
     useEffect(() => {
@@ -30,15 +35,22 @@ const Receiver = () => {
         return () => chrome.storage.local.onChanged.removeListener(onMessage)
     }, [onMessage])
 
+    const headerORrequest = symbol => {
+        if (symbol === 'R') {
+            return <span alt="R">🇷</span>
+        }
+        else if (symbol === 'H') {
+            return <span alt='H'>🇭</span>
+        }
+        return <span alt="unknown">❓</span>
+    }
+
     const rows = (data) => {
-        console.log(data)
         return data.map((row, i) =>
             <tr key={i}>
                 <td className="row-url">{row.url}</td>
-                <td>{row.httpOnly.toString()}</td>
-                <td>{row.type}</td>
-                <td>{row.name}</td>
-                <TransformingCell cname="row-value" content={row.value}/>
+                <td>{row.name} {headerORrequest(row.type)}</td>
+                <TransformingCell cname="row-value" content={row.value} />
             </tr>
         )
     }
@@ -46,22 +58,27 @@ const Receiver = () => {
     return (
         <div>
             <div className="button" onClick={clear}>Clear history!</div>
-            <span>Click any JWT to toggle decoding its header and body. Also, scroll to see more entries</span>
-            <div className="table-cont">
-            <table className="jwt-table">
-                <thead>
-                    <tr>
-                        <th className="row-url">url</th>
-                        <th className="row-httpOnly">httpOnly</th>
-                        <th className="row-type">type</th>
-                        <th className="row-name">name</th>
-                        <th className="row-value">value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {rows(msgs)}
-                </tbody>
-            </table>
+            <span>Double click any JWT to toggle decoding its header and body.
+                Scroll to see more entries. '🇭' = header and '🇷' = request</span>
+            <div className="tableContainer">
+                <div className="tHeadContainer">
+                    <table className="tHead">
+                        <thead>
+                            <tr>
+                                <th className="row-url">url</th>
+                                <th className="row-name">name</th>
+                                <th className="row-value">value</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div className="tBodyContainer">
+                    <table className="tBody">
+                        <tbody>
+                            {rows(msgs)}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     )

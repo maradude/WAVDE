@@ -7,8 +7,13 @@ const isHttpOnly = value => {
 }
 
 const processHeader = (req, header, match) => {
-    const httpOnly = isHttpOnly(header.value)
-    const data = JWT(match, {url: req.url, type: 'H', name: header.name, httpOnly})
+    let name = header.name
+    if (name.toLowerCase() === 'set-cookie') {
+        const httpOnly = isHttpOnly(header.value)
+        name += `; httpOnly=${httpOnly.toString()}`
+
+    }
+    const data = JWT(match, {url: req.url, type: 'H', name: name})
     console.log('JWT FOUND', data)
     save(data)
     send(data)
@@ -16,8 +21,8 @@ const processHeader = (req, header, match) => {
 
 const onHeaderHandler = (req, headers) => {
     headers.forEach(header => {
-        const match = findJWT(header.value)
-        if (match !== null) {
+        const matches = findJWT(header.value)
+        for (const match of matches) {
             processHeader(req, header, match)
         }
     })

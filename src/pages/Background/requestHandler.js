@@ -15,6 +15,7 @@ const decodeRaw = (raw) => {
     }).join('')
 }
 
+
 const onBeforeRequestHandler = req => {
     if (ourURL(req.url)) {
         return
@@ -22,15 +23,18 @@ const onBeforeRequestHandler = req => {
     if (req.method === 'POST') {
         console.debug("POST sent")
     }
+    const urlMatches = findJWT(req.url)
+    for (const match of urlMatches) {
+        processRequest(req, match)
+    }
     if (req.requestBody?.formData) {
         console.log(req.url, " formData: ", req.requestBody.formData)
         console.log(req.url, " raw: ", decodeRaw(req.requestBody?.raw))
     }
     if (req.requestBody?.raw) {
-        const rawMatch = findJWT(decodeRaw(req.requestBody.raw))
-        console.debug(req.requestBody.formData)
-        if (rawMatch !== null) {
-            processRequest(req, rawMatch)
+        const rawMatches = findJWT(decodeRaw(req.requestBody.raw))
+        for (const match of rawMatches) {
+            processRequest(req, match)
         }
     }
 }
