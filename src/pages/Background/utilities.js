@@ -2,14 +2,15 @@ const apiURL = "http://localhost:3001/"
 
 const ourURL = url => url === apiURL
 
-const send = async (data) => {
+const send = async(data) => {
+    // data : { url, type, name, value })
     try {
         const rawResponse = await fetch(apiURL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ jwt: data.value })
+            body: JSON.stringify(data)
         })
         console.debug(await rawResponse.text())
     } catch (error) {
@@ -17,8 +18,8 @@ const send = async (data) => {
     }
 }
 
-const save = async (data, key = 'benign-success') => {
-    const defaultOpt =  {}
+const save = async(data, key = 'benign-success') => {
+    const defaultOpt = {}
     defaultOpt[key] = []
     const stored = await chrome.storage.local.get(defaultOpt)
     stored[key].push(data)
