@@ -1,39 +1,13 @@
 import React, { useState, useEffect } from "react";
 import TransformingCell from './TransformingCell'
+import storageReader from '../Content/modules/storageReader'
 
 import './Receiver.css'
 
 const Receiver = () => {
-    const [msgs, setMsgs] = useState([])
+    const [jwts, setJWTs] = useState([])
     const matchKey = 'benign-success'
-
-    const onMessage = (changes, areaName) => {
-        const changed = changes[matchKey].newValue
-        if (void 0 !== changed) {
-            setMsgs(changed)
-        }
-
-    }
-
-    const clear = () => {
-        const options = {}
-        options[matchKey] = []
-        chrome.storage.local.set(options)
-        setMsgs([])
-    }
-
-    useEffect(async () => {
-        const defaultOpts = {}
-        defaultOpts[matchKey] = []
-        const data = await chrome.storage.local.get(defaultOpts)
-        setMsgs(data[matchKey])
-    }, [])
-
-    useEffect(() => {
-        // only rerun the function if onMessage gets cleaned up
-        chrome.storage.local.onChanged.addListener(onMessage)
-        return () => chrome.storage.local.onChanged.removeListener(onMessage)
-    }, [onMessage])
+    const storage = storageReader(setJWTs, matchKey)
 
     const headerORrequest = symbol => {
         if (symbol === 'R') {
@@ -57,7 +31,7 @@ const Receiver = () => {
 
     return (
         <div>
-            <div className="button" onClick={clear}>Clear history!</div>
+            <div className="button" onClick={storage.clear}>Clear history!</div>
             <span>Double click any JWT to toggle decoding its header and body.
                 Scroll to see more entries. '🇭' = header and '🇷' = request</span>
             <div className="tableContainer">
@@ -75,7 +49,7 @@ const Receiver = () => {
                 <div className="tBodyContainer">
                     <table className="tBody">
                         <tbody>
-                            {rows(msgs)}
+                            {rows(jwts)}
                         </tbody>
                     </table>
                 </div>

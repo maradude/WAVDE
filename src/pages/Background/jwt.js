@@ -1,6 +1,6 @@
 import {save} from './utilities'
 
-const JWTRe = /([A-Za-z0-9-_]{4,})\.([A-Za-z0-9-_]*)\.([A-Za-z0-9-_]*)/g // match JWT, group by section, only header mandatory
+const JWTRe = /([A-Za-z0-9-_]{4,})\.([A-Za-z0-9-_]{3,})\.([A-Za-z0-9-_]{3,})/g // match JWT, group by section, only header mandatory
 
 const bareminimum = /(\..*\..*)/
 
@@ -40,10 +40,8 @@ const findJWT = (candidate) => {
             console.log("full: ", candidate)
             console.debug(e)
             console.groupEnd()
+            save(candidate, 'benign-fail')
         }
-    }
-    if (res.length === 0) {
-        save(candidate, 'benign-fail')
     }
     return res
 }
