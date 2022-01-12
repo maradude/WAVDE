@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const StorageReader = ({ saveData, matchKey }) => {
+const StorageReader = (saveData, matchKey) => {
   /** empty storage and state */
   const clear = () => {
     const options = {}
