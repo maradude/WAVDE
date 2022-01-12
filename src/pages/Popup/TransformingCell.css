@@ -1,11 +1,11 @@
 .jwt-header {
-    color:#fb015b;
+  color: #fb015b;
 }
 
 .jwt-body {
-    color: #d63aff;
+  color: #d63aff;
 }
 
 .jwt-sig {
-    color: #00b9f1;
+  color: #00b9f1;
 }

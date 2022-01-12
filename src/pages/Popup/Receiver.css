@@ -1,5 +1,5 @@
 .button {
-  background-color: #4CAF50; /* Green */
+  background-color: #4caf50; /* Green */
   border: none;
   color: white;
   padding: 15px 32px;
@@ -14,21 +14,22 @@ table {
   border-spacing: 0;
 }
 
-
-thead, tbody {
-    display: block;
+thead,
+tbody {
+  display: block;
 }
 
-tr:after {  /* clearing float */
-    content: ' ';
-    display: block;
-    visibility: hidden;
-    clear: both;
+tr:after {
+  /* clearing float */
+  content: ' ';
+  display: block;
+  visibility: hidden;
+  clear: both;
 }
 
 tbody {
-    height: 530px; /* slightly smaller than the pop-up height, to account for header and button */
-    overflow-y: scroll;
+  height: 530px; /* slightly smaller than the pop-up height, to account for header and button */
+  overflow-y: scroll;
 }
 
 td {
