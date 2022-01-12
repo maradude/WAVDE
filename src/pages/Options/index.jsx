@@ -1,11 +1,9 @@
-import React from 'react';
-import { render } from 'react-dom';
-import FailLog from './failLog';
+import React from 'react'
+import { render } from 'react-dom'
+import FailLog from './failLog'
 
-import './index.css';
+import './index.css'
 
-render(
-  <FailLog />, window.document.querySelector('#app-container')
-);
+render(<FailLog />, window.document.querySelector('#app-container'))
 
-if (module.hot) module.hot.accept();
+if (module.hot) module.hot.accept()
