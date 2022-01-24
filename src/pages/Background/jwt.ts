@@ -2,7 +2,7 @@ import { save } from './utilities'
 
 const JWTRe = /([A-Za-z0-9-_]{4,})\.([A-Za-z0-9-_]{3,})\.([A-Za-z0-9-_]{3,})/g // match JWT, group by section, only header mandatory
 
-const isURIEncoded = (uri) => {
+const isURIEncoded = (uri: string) => {
   try {
     return uri !== decodeURIComponent(uri || '')
   } catch (error) {
@@ -13,7 +13,7 @@ const isURIEncoded = (uri) => {
   }
 }
 
-const tryToDecodeURI = (url) => {
+const tryToDecodeURI = (url: string) => {
   let tries = 0
   while (isURIEncoded(url) && tries++ < 30) {
     url = decodeURIComponent(url)
@@ -21,7 +21,7 @@ const tryToDecodeURI = (url) => {
   return url
 }
 
-const findJWT = (candidate) => {
+const findJWT = (candidate: string) => {
   if (isURIEncoded(candidate)) {
     candidate = tryToDecodeURI(candidate)
   }
@@ -43,13 +43,14 @@ const findJWT = (candidate) => {
   return res
 }
 
-const JWT = (value, { url, type, name } = {}) => {
-  return {
-    value,
-    url,
-    type,
-    name,
-  }
+type HeaderMarker = 'R' | 'H'
+
+interface JWT {
+  value: string
+  url: string
+  type: HeaderMarker
+  name: string
 }
 
-export { JWT, findJWT }
+export { findJWT }
+export type { JWT }

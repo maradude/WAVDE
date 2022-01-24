@@ -1,14 +1,20 @@
 import React, { useState } from 'react'
 import './TransformingCell.css'
 
-const TransformingCell = ({ cname, content }) => {
+const TransformingCell = ({
+  cname,
+  content,
+}: {
+  cname: string
+  content: string
+}) => {
   const [isDecoded, setIsDecoded] = useState(false)
 
   const toggleDecode = () => {
     setIsDecoded(!isDecoded)
   }
 
-  const show = (msg, toDecode) => {
+  const show = (msg: string, toDecode: boolean) => {
     let [header, body, sig] = msg.split('.')
     if (toDecode) {
       header = window.atob(header)

@@ -5,11 +5,11 @@ import './failLog.css'
 
 const FailLog = () => {
   // storage logic is identical to Receiver
-  const [fails, setFails] = useState([])
+  const [fails, setFails] = useState<string[]>([])
   const matchKey = 'benign-fail'
   const storage = storageReader(setFails, matchKey)
 
-  const rows = (data) => {
+  const rows = (data: string[]) => {
     return data.map((row, i) => <div key={i}>{row}</div>)
   }
 

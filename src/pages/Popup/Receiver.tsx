@@ -4,21 +4,23 @@ import storageReader from '../Content/modules/storageReader'
 
 import './Receiver.css'
 
+import type { JWT } from '../Background/jwt'
+
 const Receiver = () => {
-  const [jwts, setJWTs] = useState([])
+  const [jwts, setJWTs] = useState<JWT[]>([])
   const matchKey = 'benign-success'
   const storage = storageReader(setJWTs, matchKey)
 
-  const headerORrequest = (symbol) => {
+  const headerORrequest = (symbol: 'R' | 'H') => {
     if (symbol === 'R') {
-      return <span alt="R">🇷</span>
+      return <span title="R">🇷</span>
     } else if (symbol === 'H') {
-      return <span alt="H">🇭</span>
+      return <span title="H">🇭</span>
     }
-    return <span alt="unknown">❓</span>
+    return <span title="unknown">❓</span>
   }
 
-  const rows = (data) => {
+  const rows = (data: JWT[]) => {
     return data.map((row, i) => (
       <tr key={i}>
         <td className="row-url">{row.url}</td>
