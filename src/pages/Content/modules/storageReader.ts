@@ -1,6 +1,16 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { JsonValue } from 'type-fest'
+import type { storageKey } from '../../Background/utilities'
 
-const StorageReader = (saveData: (a: any[]) => void, matchKey: string) => {
+type IStorageReader<T extends JsonValue> = {
+  data: T[]
+  clear: () => void
+}
+
+const StorageReader = <T extends JsonValue>(
+  matchKey: storageKey
+): IStorageReader<T> => {
+  const [data, saveData] = useState<T[]>([])
   /** empty storage and state */
   const clear = () => {
     chrome.storage.local.set({
@@ -20,7 +30,11 @@ const StorageReader = (saveData: (a: any[]) => void, matchKey: string) => {
 
   useEffect(() => {
     /** event handler for storage chagnes */
-    function onMessage(this: { key: string }, changes: any, areaName: string) {
+    function onMessage(
+      this: { key: string },
+      changes: { [key: string]: chrome.storage.StorageChange },
+      _areaName: string
+    ) {
       if (!changes[this.key]?.newValue) {
         // unfortunately our listener reacts to any  chrome local storage change
         // return if change is not to our matchKeys data
@@ -38,9 +52,11 @@ const StorageReader = (saveData: (a: any[]) => void, matchKey: string) => {
   }, [matchKey, saveData])
 
   return {
+    data,
     clear,
   }
 }
 
 /** listen to local storage changes on matchKey and call callback with new changes */
 export default StorageReader
+export type { IStorageReader }

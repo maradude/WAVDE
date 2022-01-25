@@ -1,16 +1,14 @@
-import React, { useState } from 'react'
+import React, { FunctionComponent } from 'react'
+
 import TransformingCell from './TransformingCell'
-import storageReader from '../Content/modules/storageReader'
 
-import './Receiver.css'
+// import './JWTTable.css'
 
-import type { JWT } from '../Background/jwt'
+import type { JWTMessage } from '../../../../Background/jwt'
 
-const Receiver = () => {
-  const [jwts, setJWTs] = useState<JWT[]>([])
-  const matchKey = 'benign-success'
-  const storage = storageReader(setJWTs, matchKey)
-
+const JWTTable: FunctionComponent<{
+  data: JWTMessage[]
+}> = ({ data }) => {
   const headerORrequest = (symbol: 'R' | 'H') => {
     if (symbol === 'R') {
       return <span title="R">🇷</span>
@@ -20,23 +18,20 @@ const Receiver = () => {
     return <span title="unknown">❓</span>
   }
 
-  const rows = (data: JWT[]) => {
+  const rows = (data: JWTMessage[]) => {
     return data.map((row, i) => (
       <tr key={i}>
         <td className="row-url">{row.url}</td>
         <td>
           {row.name} {headerORrequest(row.type)}
         </td>
-        <TransformingCell cname="row-value" content={row.value} />
+        <TransformingCell cname="row-value" content={row.jwt} />
       </tr>
     ))
   }
 
   return (
     <div>
-      <div className="button" onClick={storage.clear}>
-        Clear history!
-      </div>
       <span>
         Double click any JWT to toggle decoding its header and body. Scroll to
         see more entries. '🇭' = header and '🇷' = request
@@ -55,11 +50,11 @@ const Receiver = () => {
         </div>
         <div className="tBodyContainer">
           <table className="tBody">
-            <tbody>{rows(jwts)}</tbody>
+            <tbody>{rows(data)}</tbody>
           </table>
         </div>
       </div>
     </div>
   )
 }
-export default Receiver
+export default JWTTable

@@ -1,21 +1,19 @@
-import React, { useState } from 'react'
+import React, { FunctionComponent, useState } from 'react'
+import { JWT } from '../../../../Background/jwt'
 import './TransformingCell.css'
 
-const TransformingCell = ({
-  cname,
-  content,
-}: {
+const TransformingCell: FunctionComponent<{
   cname: string
-  content: string
-}) => {
+  content: JWT
+}> = ({ cname, content }) => {
   const [isDecoded, setIsDecoded] = useState(false)
 
   const toggleDecode = () => {
     setIsDecoded(!isDecoded)
   }
 
-  const show = (msg: string, toDecode: boolean) => {
-    let [header, body, sig] = msg.split('.')
+  const show = (msg: JWT, toDecode: boolean) => {
+    let { header, body, signature } = msg
     if (toDecode) {
       header = window.atob(header)
       body = window.atob(body)
@@ -24,7 +22,7 @@ const TransformingCell = ({
       <>
         <span className="jwt-header">{header}</span>.
         <span className="jwt-body">{body}</span>.
-        <span className="jwt-sig">{sig}</span>
+        <span className="jwt-sig">{signature}</span>
       </>
     )
   }

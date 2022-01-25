@@ -38,7 +38,7 @@ var options = {
     options: path.join(__dirname, 'src', 'pages', 'Options', 'index.tsx'),
     popup: path.join(__dirname, 'src', 'pages', 'Popup', 'index.tsx'),
     background: path.join(__dirname, 'src', 'pages', 'Background', 'index.ts'),
-    contentScript: path.join(__dirname, 'src', 'pages', 'Content', 'index.ts'),
+    contentScript: path.join(__dirname, 'src', 'pages', 'Content', 'index.tsx'),
     devtools: path.join(__dirname, 'src', 'pages', 'Devtools', 'index.ts'),
     panel: path.join(__dirname, 'src', 'pages', 'Panel', 'index.tsx'),
   },
@@ -56,6 +56,7 @@ var options = {
       {
         // look for .css or .scss files
         test: /\.(css|scss)$/,
+        exclude: path.resolve(__dirname, 'src/pages/Content/'),
         // in the `src` directory
         use: [
           {
@@ -68,6 +69,21 @@ var options = {
             loader: 'sass-loader',
             options: {
               sourceMap: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.css$/i,
+        include: path.resolve(__dirname, 'src/pages/Content/'),
+        use: [
+          {
+            loader: 'to-string-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
             },
           },
         ],

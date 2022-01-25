@@ -1,0 +1,12 @@
+.warning-panel {
+  height: 100%;
+  width: 100px;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  z-index: 9000000000000000000;
+}
+.warning-panel__button {
+  height: 50px;
+  background: green;
+}

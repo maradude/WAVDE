@@ -1,23 +1,28 @@
 import { save, send, ourURL } from './utilities'
 import { findJWT } from './jwt'
-import type { JWT } from './jwt'
+import type { JWT, JWTMessage } from './jwt'
 
 const enc = new TextDecoder('utf-8')
 
 const processRequest = (
   req: chrome.webRequest.WebRequestBodyDetails,
-  match: string
+  match: JWT
 ) => {
-  const data: JWT = { value: match, url: req.url, type: 'R', name: req.type }
+  const data: JWTMessage = {
+    jwt: match,
+    url: req.url,
+    type: 'R',
+    name: req.type,
+  }
   console.log('JWT FOUND', data)
-  save(data)
+  save(data, 'benign-success')
   send(data)
 }
 
 // TODO: check if decodedData actually needs decodingURIComponents applied
 const decodeRaw = (raw: chrome.webRequest.UploadData[]) => {
   const decodedData = raw.map((data) => {
-    enc.decode(data.bytes)
+    return enc.decode(data.bytes)
   })
   return decodeURIComponent(decodedData.join(''))
 }

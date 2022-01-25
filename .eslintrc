@@ -1,6 +1,23 @@
 {
-  "extends": "react-app",
+  "rules": {
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "all"
+      }
+    ]
+  },
+  "extends": [
+    "react-app",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": { "project": ["./tsconfig.json"] },
+  "plugins": ["@typescript-eslint"],
+
   "globals": {
     "chrome": "readonly"
-  }
+  },
+  "ignorePatterns": ["build/*"]
 }
