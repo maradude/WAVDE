@@ -26,12 +26,12 @@ const findJWT = (candidate: string) => {
     candidate = tryToDecodeURI(candidate)
   }
 
-  const res = []
+  const res: JWT[] = []
   let match
   while ((match = JWTRe.exec(candidate)) !== null) {
     try {
       JSON.parse(atob(match[1]))
-      res.push(match[0])
+      res.push({ header: match[1], body: match[2], signature: match[3] })
     } catch (e) {
       console.groupCollapsed(`failed match: ${match[0].slice(0, 25)} ...`)
       console.log('full: ', candidate)
@@ -45,12 +45,14 @@ const findJWT = (candidate: string) => {
 
 type HeaderMarker = 'R' | 'H'
 
-interface JWT {
-  value: string
+type JWT = { header: string; body: string; signature: string }
+
+type JWTMessage = {
+  jwt: JWT
   url: string
   type: HeaderMarker
   name: string
 }
 
 export { findJWT }
-export type { JWT }
+export type { JWTMessage, JWT }

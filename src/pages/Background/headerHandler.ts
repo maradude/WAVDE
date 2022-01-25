@@ -1,6 +1,6 @@
 import { save, send } from './utilities'
 import { findJWT } from './jwt'
-import type { JWT } from './jwt'
+import type { JWT, JWTMessage } from './jwt'
 
 const isHttpOnly = (value: string) => {
   // case insensitive as per: https://datatracker.ietf.org/doc/html/rfc6265#section-5.2.6
@@ -10,16 +10,16 @@ const isHttpOnly = (value: string) => {
 const processHeader = (
   req: chrome.webRequest.ResourceRequest,
   header: chrome.webRequest.HttpHeader,
-  match: string
+  match: JWT
 ) => {
   let name = header.name
   if (name.toLowerCase() === 'set-cookie' && header.value !== void 0) {
     const httpOnly = isHttpOnly(header.value)
     name += `; httpOnly=${httpOnly.toString()}`
   }
-  const data: JWT = { value: match, url: req.url, type: 'H', name: name }
+  const data: JWTMessage = { jwt: match, url: req.url, type: 'H', name: name }
   console.log('JWT FOUND', data)
-  save(data)
+  save(data, 'benign-success')
   send(data)
 }
 
