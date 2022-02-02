@@ -1,8 +1,23 @@
 import { findJWT, saveJWT } from './jwt'
+import { findInsecureCookies, saveInsecureCookie } from './insecureCookies'
 
-const isHttpOnly = (value: string) => {
-  // case insensitive as per: https://datatracker.ietf.org/doc/html/rfc6265#section-5.2.6
-  return value.toLowerCase().includes('httponly')
+const isSetCookies = (headerName: string) => {
+  return headerName.toLowerCase() === 'set-cookie'
+}
+
+const searchForSecurityTagsMissing = (
+  req: chrome.webRequest.ResourceRequest,
+  headerName: string,
+  headerValue: string
+) => {
+  if (!isSetCookies(headerName) || headerValue === undefined) {
+    return
+  }
+  const missingTags = findInsecureCookies(headerValue)
+  if (missingTags.length === 0) {
+    return
+  }
+  saveInsecureCookie(req, headerName, headerValue, missingTags)
 }
 
 const searchJWTInHeader = (
@@ -25,6 +40,7 @@ const onHeaderHandler = (
       return
     }
     searchJWTInHeader(req, header.name, header.value)
+    searchForSecurityTagsMissing(req, header.name, header.value)
   })
 }
 
