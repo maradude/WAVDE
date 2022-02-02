@@ -37,12 +37,29 @@ const findJWT = (candidate: string) => {
       console.log('full: ', candidate)
       console.debug(e)
       console.groupEnd()
-      save(candidate, 'benign-fail')
+      save(candidate, 'jwt-fail')
     }
   }
   return res
 }
 
+const saveJWT = (
+  req:
+    | chrome.webRequest.WebRequestBodyDetails
+    | chrome.webRequest.ResourceRequest,
+  match: JWT,
+  name: string,
+  type: HeaderMarker
+) => {
+  const data: JWTMessage = {
+    jwt: match,
+    url: req.url,
+    type,
+    name,
+  }
+  console.log('JWT FOUND', data)
+  save(data, 'jwt')
+}
 type HeaderMarker = 'R' | 'H'
 
 type JWT = { header: string; body: string; signature: string }
@@ -54,5 +71,5 @@ type JWTMessage = {
   name: string
 }
 
-export { findJWT }
+export { findJWT, saveJWT }
 export type { JWTMessage, JWT }
