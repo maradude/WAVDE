@@ -41,7 +41,7 @@ const StorageReader = <T extends JsonValue>(
         return
       }
       const changed = changes[this.key].newValue
-      if (void 0 !== changed) {
+      if (changed !== undefined) {
         saveData(changed)
       }
     }
