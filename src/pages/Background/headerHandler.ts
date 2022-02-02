@@ -13,7 +13,7 @@ const processHeader = (
   match: JWT
 ) => {
   let name = header.name
-  if (name.toLowerCase() === 'set-cookie' && header.value !== void 0) {
+  if (name.toLowerCase() === 'set-cookie' && header.value !== undefined) {
     const httpOnly = isHttpOnly(header.value)
     name += `; httpOnly=${httpOnly.toString()}`
   }
@@ -28,7 +28,7 @@ const onHeaderHandler = (
   headers: chrome.webRequest.HttpHeader[]
 ) => {
   headers.forEach((header) => {
-    if (header.value === void 0) {
+    if (header.value === undefined) {
       return
     }
     const matches = findJWT(header.value)
@@ -41,7 +41,7 @@ const onHeaderHandler = (
 const onSendHeadersHandler = (
   req: chrome.webRequest.WebRequestHeadersDetails
 ) => {
-  if (void 0 !== req.requestHeaders) {
+  if (req.requestHeaders !== undefined) {
     onHeaderHandler(req, req.requestHeaders)
   }
 }
@@ -49,7 +49,7 @@ const onSendHeadersHandler = (
 const onHeadersReceivedHandler = (
   req: chrome.webRequest.WebResponseHeadersDetails
 ) => {
-  if (void 0 !== req.responseHeaders) {
+  if (req.responseHeaders !== undefined) {
     onHeaderHandler(req, req.responseHeaders)
   }
 }
