@@ -21,7 +21,7 @@ const send = async (data: JWTMessage) => {
   }
 }
 
-export type storageKey = 'benign-success' | 'benign-fail'
+export type storageKey = 'jwt' | 'jwt-fail'
 
 const save = async (data: JsonValue, key: storageKey) => {
   const stored = await chrome.storage.local.get({ [key]: [] })

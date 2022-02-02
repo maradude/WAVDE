@@ -28,7 +28,7 @@ import type { storageKey } from '../../Background/utilities'
 // const warnings = (): { [key: string]: WarningHandler } => {
 // TODO: clean this mess
 // const jwts: warning<{ [key: string]: JsonValue }> = {
-//   reader: StorageReader<{ [key: string]: JsonValue }>('benign-success'),
+//   reader: StorageReader<{ [key: string]: JsonValue }>('jwt'),
 //   presenter: JWTTable as FunctionComponent<{
 //     data: { [key: string]: JsonValue }[]
 //     clear: () => void
@@ -58,8 +58,8 @@ const warningHandlers = (): IWarningHandlers => {
     return { reader, presenter }
   }
   return {
-    JWTs: handlerFactory<JWTMessage>('benign-success', JWTTable),
-    'False+': handlerFactory<string>('benign-fail', JWTFailLog),
+    JWTs: handlerFactory<JWTMessage>('jwt', JWTTable),
+    'False+': handlerFactory<string>('jwt-fail', JWTFailLog),
   }
 }
 
