@@ -1,8 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import BasicTable from '../../../generic/basicTable'
 
-// import './failLog.css'
-
 const JWTFailLog: FunctionComponent<{
   data: string[]
 }> = ({ data }): JSX.Element => {
