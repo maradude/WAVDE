@@ -2,6 +2,8 @@ import React, { FunctionComponent } from 'react'
 
 import type { InsecureCookieHeader } from '../../../../Background/insecureCookies'
 
+import BasicTable from '../../../generic/basicTable'
+
 const InsecureCookieTable: FunctionComponent<{
   data: InsecureCookieHeader[]
 }> = ({ data }) => {
@@ -16,31 +18,23 @@ const InsecureCookieTable: FunctionComponent<{
     ))
   }
 
+  const stringData = (data: InsecureCookieHeader[]) => {
+    return data.map((row) => ({
+      ...row,
+      missingTags: row.missingTags.join('; '),
+    }))
+  }
+
   return (
     <div>
       <span>
         Lists all set-cookie headers that don't include the Security or HttpOnly
         tag. Used for manual review
       </span>
-      <div className="tableContainer">
-        <div className="tHeadContainer">
-          <table className="tHead">
-            <thead>
-              <tr>
-                <th className="row-url">url</th>
-                <th className="row-name">name</th>
-                <th className="row-name">value</th>
-                <th className="row-tags">missing tags</th>
-              </tr>
-            </thead>
-          </table>
-        </div>
-        <div className="tBodyContainer">
-          <table className="tBody">
-            <tbody>{rows(data)}</tbody>
-          </table>
-        </div>
-      </div>
+      <BasicTable
+        rows={stringData(data)}
+        headers={['url', 'name', 'value', 'missingTags']}
+      />
     </div>
   )
 }

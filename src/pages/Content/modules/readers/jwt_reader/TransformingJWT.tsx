@@ -1,8 +1,7 @@
 import React, { FunctionComponent, useState } from 'react'
 import { JWT } from '../../../../Background/jwt'
-import './TransformingCell.css'
 
-const TransformingCell: FunctionComponent<{
+const TransformingText: FunctionComponent<{
   cname: string
   content: JWT
 }> = ({ cname, content }) => {
@@ -20,18 +19,18 @@ const TransformingCell: FunctionComponent<{
     }
     return (
       <>
-        <span className="jwt-header">{header}</span>.
-        <span className="jwt-body">{body}</span>.
-        <span className="jwt-sig">{signature}</span>
+        <span style={{ color: '#fb015b' }}>{header}</span>.
+        <span style={{ color: '#d63aff' }}>{body}</span>.
+        <span style={{ color: '#00b9f1' }}>{signature}</span>
       </>
     )
   }
 
   return (
-    <td className={cname} onDoubleClick={toggleDecode}>
+    <div className={cname} onDoubleClick={toggleDecode}>
       {show(content, isDecoded)}
-    </td>
+    </div>
   )
 }
 
-export default TransformingCell
+export default TransformingText
