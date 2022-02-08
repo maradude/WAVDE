@@ -1,7 +1,7 @@
 import React, { useState, FunctionComponent } from 'react'
 import Box from '@mui/material/Box'
 import Dialog from '@mui/material/Dialog'
-import Button from '@mui/material/Button'
+import Button, { ButtonProps } from '@mui/material/Button'
 
 const WarningReader: FunctionComponent<{
   name: string
@@ -13,23 +13,39 @@ const WarningReader: FunctionComponent<{
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
-  const warningButton = (name: string, count: number) => {
-    const color = count > 0 ? 'warning' : 'info'
-    const label = `${name}: ${count}`
+  const WarningButton = ({ name, count }: { name: string; count: number }) => {
+    let color: ButtonProps['color'], variant: ButtonProps['variant']
+    const style: ButtonProps['sx'] = { margin: '0.2em' }
+    if (count > 0) {
+      color = 'warning'
+      variant = 'contained'
+    } else {
+      color = 'primary'
+      variant = 'outlined'
+      style['bgcolor'] = '#FFF'
+      const whiteBG = {
+        '&:hover': {
+          backgroundColor: '#f5f5f5',
+        },
+        '&:active': {
+          backgroundColor: '#f5f5f5',
+        },
+        '&:focus': {
+          backgroundColor: '#FFF',
+        },
+        bgcolor: 'white',
+      }
+      Object.assign(style, whiteBG)
+    }
     return (
-      <Button
-        sx={{ margin: '0.2em' }}
-        variant="contained"
-        onClick={handleOpen}
-        color={color}
-      >
-        {label}
+      <Button sx={style} variant={variant} onClick={handleOpen} color={color}>
+        {`${name}: ${count}`}
       </Button>
     )
   }
   return (
     <div style={{ direction: 'rtl' }} className="warning-reader">
-      {warningButton(name, count)}
+      <WarningButton name={name} count={count} />
       <Dialog
         maxWidth="lg"
         open={open}
