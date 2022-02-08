@@ -1,36 +1,14 @@
 import React, { useState, FunctionComponent } from 'react'
 import Box from '@mui/material/Box'
-import Modal from '@mui/material/Modal'
+import Dialog from '@mui/material/Dialog'
 import Button from '@mui/material/Button'
-// import Typography from '@mui/material/Typography'
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 800,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-}
-
-/*
-property) presenter: React.FunctionComponent<{
-    data: JWTMessage[];
-    clear: () => void;
-}> | React.FunctionComponent<{
-    data: string[];
-    clear: () => void;
-}>
-*/
 
 const WarningReader: FunctionComponent<{
   name: string
   count: number
   children: React.ReactNode
-}> = ({ name, count, children }) => {
+  rootRef: React.MutableRefObject<null>
+}> = ({ name, count, children, rootRef }) => {
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -39,22 +17,30 @@ const WarningReader: FunctionComponent<{
     const color = count > 0 ? 'warning' : 'info'
     const label = `${name}: ${count}`
     return (
-      <Button onClick={handleOpen} color={color}>
+      <Button
+        sx={{ margin: '0.2em' }}
+        variant="contained"
+        onClick={handleOpen}
+        color={color}
+      >
         {label}
       </Button>
     )
   }
   return (
-    <div>
+    <div style={{ direction: 'rtl' }} className="warning-reader">
       {warningButton(name, count)}
-      <Modal
+      <Dialog
+        maxWidth="lg"
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        container={rootRef.current}
+        sx={{ maxWidth: 'none' }}
       >
-        <Box sx={style}>{children}</Box>
-      </Modal>
+        <Box maxWidth="lg" sx={{ width: 'fit-content' }}>
+          {children}
+        </Box>
+      </Dialog>
     </div>
   )
 }

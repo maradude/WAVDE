@@ -1,54 +1,51 @@
 import React, { FunctionComponent } from 'react'
 import Button from '@mui/material/Button'
 
-import styles from './warningPanel.css'
-
 import WarningReader from './detailModal'
 import { IWarningHandlers } from '../warnings'
 
-// type Keys = keyof IWarningReader;
-// type Values = typeof KeyToVal[Keys]; //  "myValue1" | "myValue2"
+import styles from './warningPanel.css'
 
-const f = (name: string, handler: IWarningHandlers[keyof IWarningHandlers]) => {
+const warningButton = (
+  name: string,
+  handler: IWarningHandlers[keyof IWarningHandlers],
+  rootRef: React.MutableRefObject<null>
+) => {
   const { reader, presenter } = handler
   return (
-    <WarningReader key={name} name={name} count={reader.data.length}>
-      {/* {presenter({ data: reader.data })} */}
+    <WarningReader
+      key={name}
+      name={name}
+      count={reader.data.length}
+      rootRef={rootRef}
+    >
       {presenter()}
-      <Button onClick={reader.clear}>Clear</Button>
+      <Button variant="contained" color="primary" onClick={reader.clear}>
+        Clear
+      </Button>
     </WarningReader>
   )
 }
 
-const warnings = (handlers: IWarningHandlers) => {
-  return Object.entries(handlers).map(([name, handler]) => f(name, handler))
+const warnings = (
+  handlers: IWarningHandlers,
+  rootRef: React.MutableRefObject<null>
+) => {
+  return Object.entries(handlers).map(([name, handler]) =>
+    warningButton(name, handler, rootRef)
+  )
 }
 
 const WarningPanel: FunctionComponent<{
   handlers: IWarningHandlers
-}> = ({ handlers: readers }) => {
+  rootRef: React.MutableRefObject<null>
+}> = ({ handlers, rootRef }) => {
   return (
     <div className="warning-panel">
-      {warnings(readers)}
+      {warnings(handlers, rootRef)}
       <style type="text/css">{styles}</style>
     </div>
   )
 }
-
-// const Button = ({
-//   label,
-//   action,
-//   style,
-// }: {
-//   label: string
-//   action: React.MouseEventHandler<HTMLDivElement>
-//   style: string
-// }) => {
-//   return (
-//     <div className={style} onClick={action}>
-//       {label}
-//     </div>
-//   )
-// }
 
 export default WarningPanel
