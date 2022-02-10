@@ -6,7 +6,7 @@ const isSetCookies = (headerName: string) => {
 }
 
 const searchForSecurityTagsMissing = (
-  req: chrome.webRequest.ResourceRequest,
+  res: chrome.webRequest.WebResponseHeadersDetails,
   headerName: string,
   headerValue: string
 ) => {
@@ -17,7 +17,7 @@ const searchForSecurityTagsMissing = (
   if (missingTags.length === 0) {
     return
   }
-  saveInsecureCookie(req, headerName, headerValue, missingTags)
+  saveInsecureCookie(res, headerName, headerValue, missingTags)
 }
 
 const searchJWTInHeader = (
