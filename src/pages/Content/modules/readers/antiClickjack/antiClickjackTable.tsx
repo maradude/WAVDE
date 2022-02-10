@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react'
 
-import type { AntiClickjackWarning } from '../../../../Background/missingAntiClickJackHeader'
+import type { AntiClickjackWarning } from '../../../../Background/antiClickjack'
 
 import BasicTable from '../../../generic/basicTable'
 
