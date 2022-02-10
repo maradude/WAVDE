@@ -1,6 +1,7 @@
+/**
+ * Were trying to check if a response with an html document has appropriate anti-clickjack headers
+ */
 /*
-Were trying to check if a response with an html document includes anti-clickjacking headers, either:
-
 Content-Security-Policy: frame-ancestors 'none' | 'self'
 Content-Security-Policy: frame-ancestors 'none' | 'self' <custom allowed URL>
 
@@ -13,7 +14,6 @@ as a iframe on 3rd party websites
 
 CWE-1021: Improper Restriction of Rendered UI Layers or Frames
 WASC-15: Application Misconfiguration
-
 NOTE: All CSP directives are case-insensitive and most values are also (only casesensitive: paths on URIs & nonces)
 
 TODO: xframeOptions
@@ -33,14 +33,14 @@ const hasFrameAncestor = (headerValue: Lowercase<string>) => {
   return headerValue.toLowerCase().includes('frame-ancestor')
 }
 const findXFO = (headers: chrome.webRequest.HttpHeader[]) => {
-  return headers.find(
+  return headers.filter(
     (header) => header.name.toLowerCase() === 'x-frame-options'
   )
 }
 
 const ValidXFOValues = new Set(['sameorigin', 'deny'])
 
-export const checkForMissingAntiClickjackHeaders = (
+export const checkAntiClickjack = (
   res: chrome.webRequest.WebResponseHeadersDetails
 ): AntiClickjackError | undefined => {
   // TODO: report to user if header found but misconfigured
@@ -53,19 +53,26 @@ export const checkForMissingAntiClickjackHeaders = (
     return
   }
   const xFrameOptions = findXFO(res.responseHeaders)
-  // TODO: report to user if XFO found but misconfigured
-  if (xFrameOptions?.value !== undefined) {
-    if (ValidXFOValues.has(xFrameOptions.value.toLowerCase())) {
+  if (xFrameOptions.length > 1) {
+    return 'multiple XFOs found'
+  }
+  if (xFrameOptions.length === 0) {
+    return 'Neither CSP: frame-ancestor or XFO found'
+  }
+  const XFOValue = xFrameOptions[0]?.value
+  if (XFOValue !== undefined) {
+    if (ValidXFOValues.has(XFOValue.toLowerCase())) {
       return
     }
     return 'invalid XFO value'
   }
-  return 'Neither CSP: frame-ancestor or XFO found'
+  console.error('should be impossible')
 }
 
 export type AntiClickjackError =
   | 'invalid XFO value'
   | 'Neither CSP: frame-ancestor or XFO found'
+  | 'multiple XFOs found'
 
 export type AntiClickjackWarning = {
   error: AntiClickjackError
@@ -74,7 +81,7 @@ export type AntiClickjackWarning = {
   url: string
 }
 
-export const saveMissingAntiClickJackHeader = (
+export const saveAntiClickjack = (
   res: chrome.webRequest.WebResponseHeadersDetails,
   error: AntiClickjackError
 ) => {
@@ -85,6 +92,6 @@ export const saveMissingAntiClickJackHeader = (
     cspContent: findCSP(headers)?.value ?? null,
     headers: headers.map((h) => h.name),
   }
-  console.log('Missing Anti Clickjack header', data)
-  save(data, 'missing-anti-clickjack')
+  console.log('Anti Clickjack issue', data)
+  save(data, 'anti-clickjack')
 }

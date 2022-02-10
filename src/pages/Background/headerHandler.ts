@@ -1,9 +1,6 @@
 import { findJWT, saveJWT } from './jwt'
 import { findInsecureCookies, saveInsecureCookie } from './insecureCookies'
-import {
-  checkForMissingAntiClickjackHeaders,
-  saveMissingAntiClickJackHeader,
-} from './missingAntiClickJackHeader'
+import { checkAntiClickjack, saveAntiClickjack } from './antiClickjack'
 import { findCORSAllow, saveCorsMisconfig } from './corsMisconfig'
 
 // NOTE: Header names are not case sensitive!!!
@@ -30,11 +27,11 @@ const searchForMissingAntiClickjackHeaders = (
     }
     return
   }
-  const a = checkForMissingAntiClickjackHeaders(res)
+  const a = checkAntiClickjack(res)
   if (a === undefined) {
     return
   }
-  saveMissingAntiClickJackHeader(res, a)
+  saveAntiClickjack(res, a)
 }
 
 const isSetCookies = (headerName: string) => {

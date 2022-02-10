@@ -25,7 +25,7 @@ export type storageKey =
   | 'jwt'
   | 'jwt-fail'
   | 'insecure-cookie'
-  | 'missing-anti-clickjack'
+  | 'anti-clickjack'
   | 'cors-misconfig'
 
 const save = async (data: JsonValue, key: storageKey) => {
