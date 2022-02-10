@@ -1,5 +1,9 @@
 import { save } from './utilities'
-
+/*
+both WASC-13: Info leakage
+CWE-1004: Sensitive Cookie Without 'HttpOnly' Flag
+CWE-614: Sensitive Cookie in HTTPS Session Without 'Secure' Attribute
+*/
 export const findInsecureCookies = (headerValue: string): SecurityTags[] => {
   const res: SecurityTags[] = []
   const normalizedValue = headerValue.toLowerCase() // case insensitive as per: https://datatracker.ietf.org/doc/html/rfc6265#section-5.2.6
@@ -22,9 +26,7 @@ export type InsecureCookieHeader = {
 }
 
 export const saveInsecureCookie = (
-  req:
-    | chrome.webRequest.WebRequestBodyDetails
-    | chrome.webRequest.ResourceRequest,
+  res: chrome.webRequest.WebResponseHeadersDetails,
   name: string,
   value: string,
   missingTags: SecurityTags[]
@@ -33,7 +35,7 @@ export const saveInsecureCookie = (
     name,
     value,
     missingTags,
-    url: req.url,
+    url: res.url,
   }
   console.log('Insecure cookie found', data)
   save(data, 'insecure-cookie')
