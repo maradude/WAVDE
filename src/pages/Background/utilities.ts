@@ -26,6 +26,7 @@ export type storageKey =
   | 'jwt-fail'
   | 'insecure-cookie'
   | 'missing-anti-clickjack'
+  | 'cors-misconfig'
 
 const save = async (data: JsonValue, key: storageKey) => {
   const stored = await chrome.storage.local.get({ [key]: [] })
