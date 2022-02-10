@@ -1,5 +1,30 @@
 import { findJWT, saveJWT } from './jwt'
 import { findInsecureCookies, saveInsecureCookie } from './insecureCookies'
+import {
+  checkForMissingAntiClickjackHeaders,
+  saveMissingAntiClickJackHeader,
+} from './missingAntiClickJackHeader'
+
+// NOTE: Header names are not case sensitive!!!
+
+const searchForMissingAntiClickjackHeaders = (
+  res: chrome.webRequest.WebResponseHeadersDetails
+) => {
+  if (!(res.type === 'main_frame' || res.type === 'sub_frame')) {
+    try {
+      DEBUGGING_FUNC_checkForContentTypeProgrammerError(res)
+    } catch {
+      console.log(res)
+      console.log('issues with above')
+    }
+    return
+  }
+  const a = checkForMissingAntiClickjackHeaders(res)
+  if (a === undefined) {
+    return
+  }
+  saveMissingAntiClickJackHeader(res, a)
+}
 
 const isSetCookies = (headerName: string) => {
   return headerName.toLowerCase() === 'set-cookie'
@@ -40,10 +65,22 @@ const onHeaderHandler = (
       return
     }
     searchJWTInHeader(req, header.name, header.value)
-    searchForSecurityTagsMissing(req, header.name, header.value)
   })
 }
 
+const onWebResponseHeader = (
+  req: chrome.webRequest.WebResponseHeadersDetails,
+  headers: chrome.webRequest.HttpHeader[]
+) => {
+  searchForMissingAntiClickjackHeaders(req)
+  onHeaderHandler(req, headers)
+  headers.forEach((header) => {
+    if (header.value === undefined) {
+      return
+    }
+    searchForSecurityTagsMissing(req, header.name, header.value)
+  })
+}
 const onSendHeadersHandler = (
   req: chrome.webRequest.WebRequestHeadersDetails
 ) => {
@@ -56,7 +93,22 @@ const onHeadersReceivedHandler = (
   req: chrome.webRequest.WebResponseHeadersDetails
 ) => {
   if (req.responseHeaders !== undefined) {
-    onHeaderHandler(req, req.responseHeaders)
+    onWebResponseHeader(req, req.responseHeaders)
+  }
+}
+
+function DEBUGGING_FUNC_checkForContentTypeProgrammerError(
+  res: chrome.webRequest.WebResponseHeadersDetails
+): void | never {
+  if (res.responseHeaders !== undefined) {
+    const contentType = res.responseHeaders.find(
+      (h) => h.name.toLowerCase() === 'content-type'
+    )
+    if (contentType?.value?.includes('text/html')) {
+      throw Error(
+        `Programmer logic error: why is res.type=${res.type} and not a main_frame or sub_frame: ${contentType.value}`
+      )
+    }
   }
 }
 
