@@ -3,6 +3,7 @@ import JWTTable from './readers/jwt_reader/JWTTable'
 import InsecureCookieTable from './readers/insecure_cookie/insecureCookie'
 import JWTFailLog from './readers/failed_jwt_reader/failLog'
 import AntiClickjackTable from './readers/antiClickjack/antiClickjackTable'
+import corsMisconfigTable from './readers/cors_misconfig/CORSMisconfigTable'
 
 import type { FunctionComponent } from 'react'
 import type { JWTMessage } from '../../Background/jwt'
@@ -10,6 +11,7 @@ import type { IStorageReader } from './storageReader'
 import type { InsecureCookieHeader } from '../../Background/insecureCookies'
 import type { AntiClickjackWarning } from '../../Background/missingAntiClickJackHeader'
 import type { storageKey } from '../../Background/utilities'
+import type { corsMisconfigWarning } from '../../Background/corsMisconfig'
 
 type Handler<T> = {
   reader: IStorageReader<T>
@@ -24,11 +26,14 @@ type insecureCookieHandler = Handler<InsecureCookieHeader>
 
 type antiClickJackHandler = Handler<AntiClickjackWarning>
 
+type corsMisconfigHandler = Handler<corsMisconfigWarning>
+
 export type IWarningHandlers = {
   JWTs: jwtHandler
   'False+': jwtFailHandler
   'vulnerable cookie': insecureCookieHandler
   'anti clickjack': antiClickJackHandler
+  'cors misconfig': corsMisconfigHandler
 }
 
 const warningHandlers = (): IWarningHandlers => {
@@ -50,6 +55,10 @@ const warningHandlers = (): IWarningHandlers => {
     'anti clickjack': handlerFactory<AntiClickjackWarning>(
       'missing-anti-clickjack',
       AntiClickjackTable
+    ),
+    'cors misconfig': handlerFactory<corsMisconfigWarning>(
+      'cors-misconfig',
+      corsMisconfigTable
     ),
   }
 }
