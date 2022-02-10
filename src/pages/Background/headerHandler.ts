@@ -4,8 +4,19 @@ import {
   checkForMissingAntiClickjackHeaders,
   saveMissingAntiClickJackHeader,
 } from './missingAntiClickJackHeader'
+import { findCORSAllow, saveCorsMisconfig } from './corsMisconfig'
 
 // NOTE: Header names are not case sensitive!!!
+
+const searchForCORSMisconfig = (
+  res: chrome.webRequest.WebResponseHeadersDetails
+) => {
+  const warning = findCORSAllow(res)
+  if (warning === undefined) {
+    return
+  }
+  saveCorsMisconfig(warning)
+}
 
 const searchForMissingAntiClickjackHeaders = (
   res: chrome.webRequest.WebResponseHeadersDetails
@@ -72,6 +83,7 @@ const onWebResponseHeader = (
   res: chrome.webRequest.WebResponseHeadersDetails,
   headers: chrome.webRequest.HttpHeader[]
 ) => {
+  searchForCORSMisconfig(res)
   searchForMissingAntiClickjackHeaders(res)
   onHeaderHandler(res, headers)
   headers.forEach((header) => {
