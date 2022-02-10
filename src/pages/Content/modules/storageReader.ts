@@ -7,6 +7,12 @@ type IStorageReader<T extends JsonValue> = {
   clear: () => void
 }
 
+/**
+ * Setup a extension local storage reader. Will update
+ * data on storage changes and clear storage with clear
+ * @param matchKey
+ * @returns IStorageReader<T>
+ */
 const StorageReader = <T extends JsonValue>(
   matchKey: storageKey
 ): IStorageReader<T> => {
