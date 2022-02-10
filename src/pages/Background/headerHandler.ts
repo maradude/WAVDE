@@ -69,16 +69,16 @@ const onHeaderHandler = (
 }
 
 const onWebResponseHeader = (
-  req: chrome.webRequest.WebResponseHeadersDetails,
+  res: chrome.webRequest.WebResponseHeadersDetails,
   headers: chrome.webRequest.HttpHeader[]
 ) => {
-  searchForMissingAntiClickjackHeaders(req)
-  onHeaderHandler(req, headers)
+  searchForMissingAntiClickjackHeaders(res)
+  onHeaderHandler(res, headers)
   headers.forEach((header) => {
     if (header.value === undefined) {
       return
     }
-    searchForSecurityTagsMissing(req, header.name, header.value)
+    searchForSecurityTagsMissing(res, header.name, header.value)
   })
 }
 const onSendHeadersHandler = (
