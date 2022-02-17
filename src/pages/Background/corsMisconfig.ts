@@ -18,17 +18,18 @@ import { save } from './utilities'
 export const findCORSAllow = (
   res: chrome.webRequest.WebResponseHeadersDetails
 ): corsMisconfigWarning | undefined => {
-  const corsAllow = res.responseHeaders?.find(
+  const acao = res.responseHeaders?.find(
     (h) => h.name.toLowerCase() === 'access-control-allow-origin'
   )
-  if (corsAllow?.value === undefined) {
+  if (acao?.value === undefined) {
     return
   }
-  if (corsAllow.value === '*') {
+  // check if ACAO allows all websites (essentially fully disable SOP)
+  if (acao.value === '*') {
     return {
       url: res.url,
       error: 'overly permissive CORS allow',
-      value: corsAllow.value,
+      value: acao.value,
     }
   }
 }

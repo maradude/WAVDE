@@ -24,6 +24,7 @@ const searchForMissingAntiClickjackHeaders = (
     } catch {
       console.log(res)
       console.log('issues with above')
+      throw res // TODO: DELETE ME
     }
     return
   }
@@ -106,18 +107,53 @@ const onHeadersReceivedHandler = (
   }
 }
 
+/**
+ * content-types that can be used for XSS with the X-Content-Type-Options: nosniff header active
+ * [source](https://portswigger.net/web-security/cross-site-scripting/cheat-sheet#content-types)
+ */
+const XSS_VULN_CONT_TYPES = new Set([
+  'text/html',
+  'application/xhtml+xml',
+  'application/xml',
+  'text/xml',
+  'image/svg+xml',
+  // 'text/xsl', // chrome+safari only
+])
+
+/** X-Frame-Options: frame, iframe, embed or object element.
+ *
+ * Content-Security-Policy with frame-ancestors: same but with added applet
+ */
+// const clickjackTags = new Set(['frame', 'iframe', 'object', 'embed', 'applet'])
+// console.log(
+//     `${res.type}${clickjackTags.has(res.type) ? '' : ' not'} in [${Array.from(
+//       clickjackTags
+//     ).join(', ')}]`
+//   )
+/**
+ * check for logic errors in terms of content-type ignored when
+ * not supposed to
+ * @param res
+ * @returns void | never
+ */
 function DEBUGGING_FUNC_checkForContentTypeProgrammerError(
   res: chrome.webRequest.WebResponseHeadersDetails
 ): void | never {
-  if (res.responseHeaders !== undefined) {
-    const contentType = res.responseHeaders.find(
-      (h) => h.name.toLowerCase() === 'content-type'
+  if (res.responseHeaders === undefined) {
+    return
+  }
+
+  const contentType = res.responseHeaders.find(
+    (h) => h.name.toLowerCase() === 'content-type'
+  )
+  if (
+    contentType?.value !== undefined &&
+    (XSS_VULN_CONT_TYPES.has(contentType.value) ||
+      contentType.value.includes('text/html')) // can be used for XSS when you can inject into the content-type header
+  ) {
+    throw Error(
+      `Programmer logic error: why is res.type=${res.type} and not a main_frame or sub_frame: ${contentType.value}`
     )
-    if (contentType?.value?.includes('text/html')) {
-      throw Error(
-        `Programmer logic error: why is res.type=${res.type} and not a main_frame or sub_frame: ${contentType.value}`
-      )
-    }
   }
 }
 
