@@ -37,7 +37,6 @@ const findJWT = (candidate: string) => {
       console.log('full: ', candidate)
       console.debug(e)
       console.groupEnd()
-      save(candidate, 'jwt-fail')
     }
   }
   return res

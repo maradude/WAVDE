@@ -23,7 +23,6 @@ const send = async (data: JWTMessage) => {
 
 export type storageKey =
   | 'jwt'
-  | 'jwt-fail'
   | 'insecure-cookie'
   | 'anti-clickjack'
   | 'cors-misconfig'

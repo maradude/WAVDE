@@ -1,7 +1,6 @@
 import StorageReader from './storageReader'
 import JWTTable from './readers/jwt_reader/JWTTable'
 import InsecureCookieTable from './readers/insecure_cookie/insecureCookie'
-import JWTFailLog from './readers/failed_jwt_reader/failLog'
 import AntiClickjackTable from './readers/antiClickjack/antiClickjackTable'
 import corsMisconfigTable from './readers/cors_misconfig/CORSMisconfigTable'
 
@@ -20,8 +19,6 @@ type Handler<T> = {
 
 type jwtHandler = Handler<JWTMessage>
 
-type jwtFailHandler = Handler<string>
-
 type insecureCookieHandler = Handler<InsecureCookieHeader>
 
 type antiClickJackHandler = Handler<AntiClickjackWarning>
@@ -30,7 +27,6 @@ type corsMisconfigHandler = Handler<corsMisconfigWarning>
 
 export type IWarningHandlers = {
   JWTs: jwtHandler
-  'False+': jwtFailHandler
   'vulnerable cookie': insecureCookieHandler
   'anti clickjack': antiClickJackHandler
   'cors misconfig': corsMisconfigHandler
@@ -47,7 +43,6 @@ const warningHandlers = (): IWarningHandlers => {
   }
   return {
     JWTs: handlerFactory<JWTMessage>('jwt', JWTTable),
-    'False+': handlerFactory<string>('jwt-fail', JWTFailLog),
     'vulnerable cookie': handlerFactory<InsecureCookieHeader>(
       'insecure-cookie',
       InsecureCookieTable
