@@ -41,9 +41,14 @@ const StorageReader = <T extends JsonValue>(
       changes: { [key: string]: chrome.storage.StorageChange },
       _areaName: string
     ) {
-      if (!changes[this.key]?.newValue) {
+      if (changes[this.key] === undefined) {
         // unfortunately our listener reacts to any  chrome local storage change
         // return if change is not to our matchKeys data
+        return
+      }
+      if (changes[this.key].newValue === undefined) {
+        // check if storage was cleared i.e. no new value even though key was present
+        saveData([])
         return
       }
       const changed = changes[this.key].newValue
