@@ -33,10 +33,11 @@ const findJWT = (candidate: string) => {
       JSON.parse(atob(match[1]))
       res.push({ header: match[1], body: match[2], signature: match[3] })
     } catch (e) {
-      console.groupCollapsed(`failed match: ${match[0].slice(0, 25)} ...`)
-      console.log('full: ', candidate)
+      console.debug(`----`)
+      console.debug(`failed match: ${match[0].slice(0, 25)} ...`)
+      console.debug('full: ', candidate)
       console.debug(e)
-      console.groupEnd()
+      console.debug(`----`)
     }
   }
   return res

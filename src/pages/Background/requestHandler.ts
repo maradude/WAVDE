@@ -22,7 +22,10 @@ const searchJWTInBody = (req: chrome.webRequest.WebRequestBodyDetails) => {
   }
   if (req.requestBody?.raw !== undefined) {
     const body = decodeRaw(req.requestBody.raw)
-    console.log(req.url, 'body: ', body)
+    console.groupCollapsed('found a request body')
+    console.log(req.url)
+    console.log(body)
+    console.groupEnd()
     const rawMatches = findJWT(body)
     for (const match of rawMatches) {
       saveJWT(req, match, req.type, 'R')

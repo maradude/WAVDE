@@ -21,10 +21,12 @@ const searchForMissingAntiClickjackHeaders = (
   if (!(res.type === 'main_frame' || res.type === 'sub_frame')) {
     try {
       DEBUGGING_FUNC_checkForContentTypeProgrammerError(res)
-    } catch {
-      console.log(res)
-      console.log('issues with above')
-      throw res // TODO: DELETE ME
+    } catch (e) {
+      if (e instanceof Error) {
+        console.groupCollapsed(e.message)
+        console.warn(res)
+        console.groupEnd()
+      }
     }
     return
   }
