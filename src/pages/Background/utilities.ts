@@ -1,5 +1,5 @@
 import type { JWTMessage } from './jwt'
-import { JsonValue } from 'type-fest'
+import { JsonObject, JsonValue } from 'type-fest'
 
 const apiURL = 'http://localhost:3001/'
 
@@ -19,6 +19,11 @@ const send = async (data: JWTMessage) => {
   } catch (error) {
     console.debug(error)
   }
+}
+
+export interface BaseWarning extends JsonObject {
+  initiator: string
+  url: string
 }
 
 export type storageKey =

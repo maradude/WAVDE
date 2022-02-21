@@ -1,4 +1,4 @@
-import { save } from './utilities'
+import { BaseWarning, save } from './utilities'
 /*
 both WASC-13: Info leakage
 CWE-1004: Sensitive Cookie Without 'HttpOnly' Flag
@@ -18,11 +18,10 @@ export const findInsecureCookies = (headerValue: string): SecurityTags[] => {
 
 export type SecurityTags = 'HttpOnly' | 'Secure'
 
-export type InsecureCookieHeader = {
+export interface InsecureCookieHeader extends BaseWarning {
   name: string
   value: string
   missingTags: SecurityTags[]
-  url: string
 }
 
 export const saveInsecureCookie = (
@@ -36,6 +35,7 @@ export const saveInsecureCookie = (
     value,
     missingTags,
     url: res.url,
+    initiator: res.initiator ?? 'opaque',
   }
   console.log('Insecure cookie found', data)
   save(data, 'insecure-cookie')

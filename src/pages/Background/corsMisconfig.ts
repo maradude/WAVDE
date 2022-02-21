@@ -13,7 +13,7 @@
  * WASC-14: Server Misconfiguration
  */
 
-import { save } from './utilities'
+import { BaseWarning, save } from './utilities'
 
 export const findCORSAllow = (
   res: chrome.webRequest.WebResponseHeadersDetails
@@ -30,14 +30,14 @@ export const findCORSAllow = (
       url: res.url,
       error: 'overly permissive CORS allow',
       value: acao.value,
+      initiator: res.initiator ?? 'opaque',
     }
   }
 }
 
 type corsMisconfigErrorMessage = 'overly permissive CORS allow'
 
-export type corsMisconfigWarning = {
-  url: string
+export interface corsMisconfigWarning extends BaseWarning {
   value: string
   error: corsMisconfigErrorMessage
 }

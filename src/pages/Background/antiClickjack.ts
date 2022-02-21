@@ -21,7 +21,7 @@ TODO: xframeOptions
 - check XFO not defined by a META tag
 */
 
-import { save } from './utilities'
+import { BaseWarning, save } from './utilities'
 
 const findCSP = (headers: chrome.webRequest.HttpHeader[]) => {
   return headers.find(
@@ -74,11 +74,10 @@ export type AntiClickjackError =
   | 'Neither CSP: frame-ancestor or XFO found'
   | 'multiple XFOs found'
 
-export type AntiClickjackWarning = {
+export interface AntiClickjackWarning extends BaseWarning {
   error: AntiClickjackError
   cspContent: string | null
   headers: string[]
-  url: string
 }
 
 export const saveAntiClickjack = (
@@ -91,6 +90,7 @@ export const saveAntiClickjack = (
     error,
     cspContent: findCSP(headers)?.value ?? null,
     headers: headers.map((h) => h.name),
+    initiator: res.initiator ?? 'opaque',
   }
   console.log('Anti Clickjack issue', data)
   save(data, 'anti-clickjack')

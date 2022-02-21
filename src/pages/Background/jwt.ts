@@ -1,4 +1,4 @@
-import { save } from './utilities'
+import { BaseWarning, save } from './utilities'
 
 const JWTRe = /([A-Za-z0-9-_]{4,})\.([A-Za-z0-9-_]{3,})\.([A-Za-z0-9-_]{3,})/g // match JWT, group by section, only header mandatory
 
@@ -55,6 +55,7 @@ const saveJWT = (
     url: req.url,
     type,
     name,
+    initiator: req.initiator ?? 'opaque',
   }
   console.log('JWT FOUND', data)
   save(data, 'jwt')
@@ -63,9 +64,8 @@ type HeaderMarker = 'R' | 'H'
 
 type JWT = { header: string; body: string; signature: string }
 
-type JWTMessage = {
+interface JWTMessage extends BaseWarning {
   jwt: JWT
-  url: string
   type: HeaderMarker
   name: string
 }
