@@ -5,11 +5,11 @@ import AntiClickjackTable from './readers/antiClickjack/antiClickjackTable'
 import corsMisconfigTable from './readers/cors_misconfig/CORSMisconfigTable'
 
 import type { FunctionComponent } from 'react'
-import type { JWTMessage } from '../../Background/jwt'
 import type { IStorageReader } from './storageReader'
+import type { storageKey } from '../../Background/utilities'
+import type { JWTMessage } from '../../Background/jwt'
 import type { InsecureCookieHeader } from '../../Background/insecureCookies'
 import type { AntiClickjackWarning } from '../../Background/antiClickjack'
-import type { storageKey } from '../../Background/utilities'
 import type { corsMisconfigWarning } from '../../Background/corsMisconfig'
 
 type Handler<T> = {
