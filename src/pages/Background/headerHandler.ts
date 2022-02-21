@@ -102,10 +102,10 @@ const onSendHeadersHandler = (
 }
 
 const onHeadersReceivedHandler = (
-  req: chrome.webRequest.WebResponseHeadersDetails
+  res: chrome.webRequest.WebResponseHeadersDetails
 ) => {
-  if (req.responseHeaders !== undefined) {
-    onWebResponseHeader(req, req.responseHeaders)
+  if (res.responseHeaders !== undefined) {
+    onWebResponseHeader(res, res.responseHeaders)
   }
 }
 
