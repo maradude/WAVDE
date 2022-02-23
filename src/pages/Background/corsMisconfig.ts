@@ -15,34 +15,48 @@
 
 import { BaseWarning, save } from './utilities'
 
-export const findCORSAllow = (
+const findCORSAllow = (
   res: chrome.webRequest.WebResponseHeadersDetails
 ): corsMisconfigWarning | undefined => {
+  // check ACAO first for more likely early return
   const acao = res.responseHeaders?.find(
     (h) => h.name.toLowerCase() === 'access-control-allow-origin'
   )
   if (acao?.value === undefined) {
     return
   }
+  // we only care about textual data
+  const contentType = res.responseHeaders?.find(
+    (h) => h.name.toLowerCase() === 'content-type'
+  )
+  const vuln = ['multipart', 'application', 'text']
+  if (!vuln.some((x) => contentType?.value?.toLowerCase().includes(x))) {
+    return
+  }
   // check if ACAO allows all websites (essentially fully disable SOP)
   if (acao.value === '*') {
     return {
       url: res.url,
-      error: 'overly permissive CORS allow',
+      requestType: res.type,
+      error: 'SOP disabled',
       value: acao.value,
       initiator: res.initiator ?? null,
     }
   }
 }
 
-type corsMisconfigErrorMessage = 'overly permissive CORS allow'
+type corsMisconfigError = 'overly permissive CORS allow' | 'SOP disabled'
 
-export interface corsMisconfigWarning extends BaseWarning {
+interface corsMisconfigWarning extends BaseWarning {
   value: string
-  error: corsMisconfigErrorMessage
+  error: corsMisconfigError
+  requestType: string
 }
 
-export const saveCorsMisconfig = (data: corsMisconfigWarning) => {
+const saveCorsMisconfig = (data: corsMisconfigWarning) => {
   console.log('Found CORS misconfig', data)
   save(data, 'cors-misconfig')
 }
+
+export { saveCorsMisconfig, findCORSAllow }
+export type { corsMisconfigWarning }
