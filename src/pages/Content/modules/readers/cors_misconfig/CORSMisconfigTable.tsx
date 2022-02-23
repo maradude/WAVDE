@@ -21,7 +21,7 @@ type corsMisconfigTableProps = {
  * See BasicTable FIXME for explanation for
  * why data is not set to `corsMisconfigWarning[]`
  */
-const corsMisconfigTable = ({ data }: corsMisconfigTableProps) => {
+const CorsMisconfigTable = ({ data }: corsMisconfigTableProps) => {
   return (
     <div>
       <span>Looking for overly permissive CORS allow headers</span>
@@ -33,4 +33,4 @@ const corsMisconfigTable = ({ data }: corsMisconfigTableProps) => {
   )
 }
 
-export default corsMisconfigTable
+export default CorsMisconfigTable

@@ -1,48 +1,100 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import Button from '@mui/material/Button'
 
 import WarningReader from './detailModal'
-import { IWarningHandlers } from '../warnings'
 
 import styles from './warningPanel.css'
 
-const warningButton = (
-  name: string,
-  handler: IWarningHandlers[keyof IWarningHandlers],
+import JWTTable from '../readers/jwt_reader/JWTTable'
+import InsecureCookieTable from '../readers/insecure_cookie/insecureCookie'
+import AntiClickjackTable from '../readers/antiClickjack/antiClickjackTable'
+import CorsMisconfigTable from '../readers/cors_misconfig/CORSMisconfigTable'
+import StorageReader, { IStorageReader } from '../storageReader'
+import { JWTMessage } from '../../../Background/jwt'
+import { InsecureCookieHeader } from '../../../Background/insecureCookies'
+import { corsMisconfigWarning } from '../../../Background/corsMisconfig'
+import { AntiClickjackWarning } from '../../../Background/antiClickjack'
+import { BaseWarning } from '../../../Background/utilities'
+
+type WarningType =
+  | JWTMessage
+  | InsecureCookieHeader
+  | AntiClickjackWarning
+  | corsMisconfigWarning
+
+type ToWarningHandler<Type> = Type extends BaseWarning
+  ? IStorageReader<Type>
+  : never
+
+type IWarningHandlers = ToWarningHandler<WarningType>
+
+type WarningButtonProps = {
+  name: string
+  handler: IWarningHandlers
   rootRef: React.MutableRefObject<null>
-) => {
-  const { reader, presenter } = handler
+  children: React.ReactNode
+}
+
+const WarningButton = ({
+  name,
+  handler,
+  rootRef,
+  children,
+}: WarningButtonProps) => {
   return (
-    <WarningReader
-      key={name}
-      name={name}
-      count={reader.data.length}
-      rootRef={rootRef}
-    >
-      {presenter()}
-      <Button variant="contained" color="primary" onClick={reader.clear}>
+    <WarningReader name={name} count={handler.data.length} rootRef={rootRef}>
+      {children}
+      <Button variant="contained" color="primary" onClick={handler.clear}>
         Clear
       </Button>
     </WarningReader>
   )
 }
 
-const warnings = (
-  handlers: IWarningHandlers,
+type WarningProps = {
   rootRef: React.MutableRefObject<null>
-) => {
-  return Object.entries(handlers).map(([name, handler]) =>
-    warningButton(name, handler, rootRef)
+}
+
+const Warnings = ({ rootRef }: WarningProps) => {
+  const JWTs = StorageReader<JWTMessage>('jwt')
+  const vulnCook = StorageReader<InsecureCookieHeader>('insecure-cookie')
+  const antiClickjack = StorageReader<AntiClickjackWarning>('anti-clickjack')
+  const corsMis = StorageReader<corsMisconfigWarning>('cors-misconfig')
+
+  return (
+    <>
+      <WarningButton name="JWT" handler={JWTs} rootRef={rootRef}>
+        <JWTTable data={JWTs.data} />
+      </WarningButton>
+      <WarningButton
+        name="Unsecure cookie"
+        handler={vulnCook}
+        rootRef={rootRef}
+      >
+        <InsecureCookieTable data={vulnCook.data} />
+      </WarningButton>
+      <WarningButton
+        name="Anti Clickjack"
+        handler={antiClickjack}
+        rootRef={rootRef}
+      >
+        <AntiClickjackTable data={antiClickjack.data} />
+      </WarningButton>
+      <WarningButton name="CORS Misconfig" handler={corsMis} rootRef={rootRef}>
+        <CorsMisconfigTable data={corsMis.data} />
+      </WarningButton>
+    </>
   )
 }
 
-const WarningPanel: FunctionComponent<{
-  handlers: IWarningHandlers
+type WarningPanelProps = {
   rootRef: React.MutableRefObject<null>
-}> = ({ handlers, rootRef }) => {
+}
+
+const WarningPanel = ({ rootRef }: WarningPanelProps) => {
   return (
     <div className="warning-panel">
-      {warnings(handlers, rootRef)}
+      <Warnings rootRef={rootRef} />
       <style type="text/css">{styles}</style>
     </div>
   )

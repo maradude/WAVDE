@@ -1,16 +1,15 @@
-import React, { useRef, FunctionComponent } from 'react'
+import React, { useRef } from 'react'
 import { render } from 'react-dom'
 import root from 'react-shadow/emotion'
 
 import WarningPanel from './modules/hud/warningPanel'
-import warningHandlers from './modules/warnings'
 
-const App: FunctionComponent = () => {
+const App = () => {
   const rootRef = useRef(null)
   return (
     <root.div className="benign-ext__shadow-root">
       <div ref={rootRef}>
-        <WarningPanel handlers={warningHandlers()} rootRef={rootRef} />
+        <WarningPanel rootRef={rootRef} />
       </div>
     </root.div>
   )
