@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
-import { JsonValue } from 'type-fest'
-import type { storageKey } from '../../Background/utilities'
+import type { BaseWarning, storageKey } from '../../Background/utilities'
 
-type IStorageReader<T extends JsonValue> = {
+type IStorageReader<T extends BaseWarning> = {
   data: T[]
   clear: () => void
 }
@@ -13,7 +12,7 @@ type IStorageReader<T extends JsonValue> = {
  * @param matchKey
  * @returns IStorageReader<T>
  */
-const StorageReader = <T extends JsonValue>(
+const StorageReader = <T extends BaseWarning>(
   matchKey: storageKey
 ): IStorageReader<T> => {
   const [data, saveData] = useState<T[]>([])

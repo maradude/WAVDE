@@ -1,5 +1,4 @@
 import type { JWTMessage } from './jwt'
-import { JsonObject, JsonValue } from 'type-fest'
 
 const apiURL = 'http://localhost:3001/'
 
@@ -32,10 +31,17 @@ export type storageKey =
   | 'anti-clickjack'
   | 'cors-misconfig'
 
-const save = async (data: JsonValue, key: storageKey) => {
+/**
+ * Save data to local storage array assigned to key
+ *
+ * @param data
+ * @param key
+ * @returns Promise<void>
+ */
+const save = async (data: BaseWarning, key: storageKey): Promise<void> => {
   const stored = await chrome.storage.local.get({ [key]: [] })
   stored[key].push(data)
-  chrome.storage.local.set(stored)
+  return chrome.storage.local.set(stored)
 }
 
 export { save, send, ourURL }
