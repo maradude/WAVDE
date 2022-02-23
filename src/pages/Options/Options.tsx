@@ -5,7 +5,7 @@ interface Props {
   title: string
 }
 
-const Options: React.FC<Props> = ({ title }: Props) => {
+const Options = ({ title }: Props) => {
   return <div className="OptionsContainer">{title.toUpperCase()} PAGE</div>
 }
 

@@ -1,12 +1,14 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 
 import type { InsecureCookieHeader } from '../../../../Background/insecureCookies'
 
 import BasicTable from '../../../generic/basicTable'
 
-const InsecureCookieTable: FunctionComponent<{
+type InsecureCookieTableProps = {
   data: InsecureCookieHeader[]
-}> = ({ data }) => {
+}
+
+const InsecureCookieTable = ({ data }: InsecureCookieTableProps) => {
   const stringData = (data: InsecureCookieHeader[]) => {
     return data.map((row) => ({
       ...row,

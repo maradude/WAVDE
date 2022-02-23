@@ -1,10 +1,12 @@
-import React, { FunctionComponent, useState } from 'react'
+import React, { useState } from 'react'
 import { JWT } from '../../../../Background/jwt'
 
-const TransformingText: FunctionComponent<{
+type TransformingTextProps = {
   cname: string
   content: JWT
-}> = ({ cname, content }) => {
+}
+
+const TransformingText = ({ cname, content }: TransformingTextProps) => {
   const [isDecoded, setIsDecoded] = useState(false)
 
   const toggleDecode = () => {

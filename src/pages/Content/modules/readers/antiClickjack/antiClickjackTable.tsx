@@ -1,12 +1,14 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 
 import type { AntiClickjackWarning } from '../../../../Background/antiClickjack'
 
 import BasicTable from '../../../generic/basicTable'
 
-const antiClickjackTable: FunctionComponent<{
+type antiClickjackTableProps = {
   data: AntiClickjackWarning[]
-}> = ({ data }) => {
+}
+
+const antiClickjackTable = ({ data }: antiClickjackTableProps) => {
   const stringData = (data: AntiClickjackWarning[]) => {
     return data.map((row) => ({
       ...row,

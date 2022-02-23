@@ -3,7 +3,11 @@ import { downloadJSON } from './download'
 import { Button } from '@mui/material'
 import './Popup.css'
 
-const DlStatus = ({ dlStatus }: { dlStatus?: boolean }) => {
+type DlStatusProps = {
+  dlStatus?: boolean
+}
+
+const DlStatus = ({ dlStatus }: DlStatusProps) => {
   return <h2>{dlStatus ? 'storage downloaded' : 'issue with download'}</h2>
 }
 const ClStatus = () => {

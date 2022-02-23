@@ -1,9 +1,11 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import BasicTable from '../../../generic/basicTable'
 
-const JWTFailLog: FunctionComponent<{
+type JWTFAilLogProps = {
   data: string[]
-}> = ({ data }): JSX.Element => {
+}
+
+const JWTFailLog = ({ data }: JWTFAilLogProps): JSX.Element => {
   return (
     <div>
       <h3>Fail log</h3>

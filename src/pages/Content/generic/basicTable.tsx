@@ -9,13 +9,12 @@ import Paper from '@mui/material/Paper'
 
 const MAX_WIDTH = 800 - 68 // after computing padding, margin, border size is reduced
 
-const Row = ({
-  values,
-  maxWidth,
-}: {
+type RowProps = {
   values: React.ReactNode[]
   maxWidth: number
-}) => {
+}
+
+const Row = ({ values, maxWidth }: RowProps) => {
   return (
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
       {values.map((cellValue, i) => (
@@ -27,7 +26,11 @@ const Row = ({
   )
 }
 
-const Header = ({ headers }: { headers: string[] }) => {
+type HeaderProps = {
+  headers: string[]
+}
+
+const Header = ({ headers }: HeaderProps) => {
   if (headers.length === 0) {
     throw new Error('must include at least 1 header')
   }
@@ -39,13 +42,14 @@ const Header = ({ headers }: { headers: string[] }) => {
   )
 }
 
-const Contents = ({
-  rows,
-  order,
-}: {
-  rows: { [key: string]: React.ReactNode }[]
+type ContentProps = {
+  rows: {
+    [key: string]: React.ReactNode
+  }[]
   order: string[]
-}) => {
+}
+
+const Contents = ({ rows, order }: ContentProps) => {
   const sort = (obj: { [key: string]: React.ReactNode }) =>
     order.map((key) => obj[key])
   const orderedRow = rows.map((row) => sort(row))
@@ -59,13 +63,29 @@ const Contents = ({
   )
 }
 
-export default function BasicTable({
-  headers,
+type BasicTableProps<
+  T extends {
+    [k: string]: React.ReactNode
+  }
+> = {
+  rows: T[]
+  headers: Extract<keyof T, string>[]
+}
+
+/**
+ * FIXME: for some reason the type only works if
+ * the interface it's implementing has been
+ * written out explicitly e.g. `rows` freaks out
+ * if something like corsMisconfigWarning[] is passed to it instead
+ * of typing out an array of objects with the exact same keys and values
+ * as corsMisconfigWarning
+ * @param param0
+ * @returns
+ */
+export default function BasicTable<T extends { [k: string]: React.ReactNode }>({
   rows,
-}: {
-  headers: string[]
-  rows: { [key: string]: React.ReactNode }[]
-}) {
+  headers,
+}: BasicTableProps<T>) {
   return (
     <TableContainer sx={{ maxHeight: 440 }} component={Paper}>
       <Table

@@ -5,9 +5,11 @@ import TransformingText from './TransformingJWT'
 import type { JWTMessage } from '../../../../Background/jwt'
 import BasicTable from '../../../generic/basicTable'
 
-const JWTTable: FunctionComponent<{
+type JWTTableProps = {
   data: JWTMessage[]
-}> = ({ data }) => {
+}
+
+const JWTTable = ({ data }: JWTTableProps) => {
   const headerORrequest = (symbol: 'R' | 'H') => {
     if (symbol === 'R') {
       return '🇷'

@@ -1,8 +1,18 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 
 import type { corsMisconfigWarning } from '../../../../Background/corsMisconfig'
 
 import BasicTable from '../../../generic/basicTable'
+
+type corsMisconfigTableProps = {
+  data: {
+    value: string
+    error: corsMisconfigWarning['error']
+    requestType: string
+    initiator: string | null
+    url: string
+  }[]
+}
 
 /**
  * @param param0 aka. `corsMisconfigWarning`
@@ -11,15 +21,7 @@ import BasicTable from '../../../generic/basicTable'
  * See BasicTable FIXME for explanation for
  * why data is not set to `corsMisconfigWarning[]`
  */
-const corsMisconfigTable: FunctionComponent<{
-  data: {
-    value: string
-    error: corsMisconfigWarning['error']
-    requestType: string
-    initiator: string | null
-    url: string
-  }[]
-}> = ({ data }) => {
+const corsMisconfigTable = ({ data }: corsMisconfigTableProps) => {
   return (
     <div>
       <span>Looking for overly permissive CORS allow headers</span>
