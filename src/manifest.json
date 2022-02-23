@@ -20,7 +20,7 @@
     }
   ],
   "devtools_page": "devtools.html",
-  "permissions": ["webRequest", "storage", "downloads"],
+  "permissions": ["webRequest", "storage", "downloads", "alarms"],
   "host_permissions": ["<all_urls>"],
   "web_accessible_resources": [
     {
