@@ -22,7 +22,7 @@ const InsecureCookieTable: FunctionComponent<{
       </span>
       <BasicTable
         rows={stringData(data)}
-        headers={['url', 'name', 'value', 'missingTags']}
+        headers={['initiator', 'url', 'name', 'value', 'missingTags']}
       />
     </div>
   )

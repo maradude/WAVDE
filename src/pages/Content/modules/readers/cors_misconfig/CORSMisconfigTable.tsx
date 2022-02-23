@@ -23,7 +23,10 @@ const corsMisconfigTable: FunctionComponent<{
   return (
     <div>
       <span>Looking for overly permissive CORS allow headers</span>
-      <BasicTable rows={data} headers={['url', 'error', 'value']} />
+      <BasicTable
+        rows={data}
+        headers={['initiator', 'url', 'error', 'value']}
+      />
     </div>
   )
 }

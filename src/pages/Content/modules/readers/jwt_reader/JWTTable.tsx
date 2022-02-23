@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 
 import TransformingText from './TransformingJWT'
 
@@ -30,7 +30,7 @@ const JWTTable: FunctionComponent<{
       </span>
       <BasicTable
         rows={rows(data)}
-        headers={['url', 'type', 'initiator', 'name', 'jwt']}
+        headers={['initiator', 'url', 'type', 'name', 'jwt']}
       />
     </div>
   )

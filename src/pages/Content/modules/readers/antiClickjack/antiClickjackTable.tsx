@@ -21,7 +21,7 @@ const antiClickjackTable: FunctionComponent<{
       </span>
       <BasicTable
         rows={stringData(data)}
-        headers={['url', 'error', 'cspContent', 'headers']}
+        headers={['initiator', 'url', 'error', 'cspContent', 'headers']}
       />
     </div>
   )
