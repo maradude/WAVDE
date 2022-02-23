@@ -21,7 +21,13 @@ const searchJWTInBody = (req: chrome.webRequest.WebRequestBodyDetails) => {
     )
   }
   if (req.requestBody?.raw !== undefined) {
-    const body = decodeRaw(req.requestBody.raw)
+    let body: string
+    try {
+      body = decodeRaw(req.requestBody.raw)
+    } catch (e) {
+      console.error('Issue with request body decode: ', e)
+      return
+    }
     console.groupCollapsed('found a request body')
     console.log(req.url)
     console.log(body)
