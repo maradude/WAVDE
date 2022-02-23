@@ -41,8 +41,22 @@ const Popup = () => {
     }, 4000)
   }
 
+  const KeyboardShortcutKeys = () => (
+    <>
+      <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>Y</kbd>
+    </>
+  )
+
+  const KeyboardShortcutInfo = () => (
+    <div>
+      If not already bound to something else, <KeyboardShortcutKeys /> will also
+      download storage
+    </div>
+  )
+
   return (
     <div className="App">
+      <KeyboardShortcutInfo />
       <Button onClick={buttonHandler(download)}>Download Storage</Button>
       <Button onClick={buttonHandler(clear)}>clear Storage</Button>
       {dlStatus !== undefined && <DlStatus dlStatus={dlStatus} />}
