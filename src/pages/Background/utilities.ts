@@ -21,8 +21,8 @@ const send = async (data: JWTMessage) => {
   }
 }
 
-export interface BaseWarning extends JsonObject {
-  initiator: string
+export interface BaseWarning {
+  initiator: string | null
   url: string
 }
 

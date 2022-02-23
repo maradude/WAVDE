@@ -90,7 +90,7 @@ export const saveAntiClickjack = (
     error,
     cspContent: findCSP(headers)?.value ?? null,
     headers: headers.map((h) => h.name),
-    initiator: res.initiator ?? 'opaque',
+    initiator: res.initiator ?? null,
   }
   console.log('Anti Clickjack issue', data)
   save(data, 'anti-clickjack')

@@ -56,7 +56,7 @@ const saveJWT = (
     url: req.url,
     type,
     name,
-    initiator: req.initiator ?? 'opaque',
+    initiator: req.initiator ?? null,
   }
   console.log('JWT FOUND', data)
   save(data, 'jwt')

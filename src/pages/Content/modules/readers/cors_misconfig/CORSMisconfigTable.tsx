@@ -4,8 +4,21 @@ import type { corsMisconfigWarning } from '../../../../Background/corsMisconfig'
 
 import BasicTable from '../../../generic/basicTable'
 
+/**
+ * @param param0 aka. `corsMisconfigWarning`
+ * @returns `React.JSXElement`
+ *
+ * See BasicTable FIXME for explanation for
+ * why data is not set to `corsMisconfigWarning[]`
+ */
 const corsMisconfigTable: FunctionComponent<{
-  data: corsMisconfigWarning[]
+  data: {
+    value: string
+    error: corsMisconfigWarning['error']
+    requestType: string
+    initiator: string | null
+    url: string
+  }[]
 }> = ({ data }) => {
   return (
     <div>

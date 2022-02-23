@@ -30,7 +30,7 @@ export const findCORSAllow = (
       url: res.url,
       error: 'overly permissive CORS allow',
       value: acao.value,
-      initiator: res.initiator ?? 'opaque',
+      initiator: res.initiator ?? null,
     }
   }
 }
