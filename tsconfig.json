@@ -18,6 +18,8 @@
     "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "noImplicitAny": true,
     "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
     "strictNullChecks": true
   },
   "include": ["src"],
