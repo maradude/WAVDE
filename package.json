@@ -10,7 +10,8 @@
   "scripts": {
     "build": "node utils/build.js",
     "start": "node utils/webserver.js",
-    "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,scss,md}'"
+    "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,scss,md}'",
+    "prod": "cross-env NODE_ENV=production npm run build"
   },
   "dependencies": {
     "@emotion/react": "^11.7.1",
@@ -36,6 +37,7 @@
     "babel-loader": "^8.2.2",
     "babel-preset-react-app": "^10.0.0",
     "copy-webpack-plugin": "^7.0.0",
+    "cross-env": "^7.0.3",
     "css-loader": "^5.2.7",
     "eslint": "^8.7.0",
     "eslint-config-react-app": "^7.0.0",
