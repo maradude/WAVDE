@@ -14,7 +14,7 @@ import { JWTMessage } from '../../../Background/jwt'
 import { InsecureCookieHeader } from '../../../Background/insecureCookies'
 import { corsMisconfigWarning } from '../../../Background/corsMisconfig'
 import { AntiClickjackWarning } from '../../../Background/antiClickjack'
-import { BaseWarning } from '../../../Background/utilities'
+import { BaseWarning, storageKey } from '../../../Background/utilities'
 
 type WarningType =
   | JWTMessage
@@ -56,10 +56,14 @@ type WarningProps = {
 }
 
 const Warnings = ({ rootRef }: WarningProps) => {
-  const JWTs = StorageReader<JWTMessage>('jwt')
-  const vulnCook = StorageReader<InsecureCookieHeader>('insecure-cookie')
-  const antiClickjack = StorageReader<AntiClickjackWarning>('anti-clickjack')
-  const corsMis = StorageReader<corsMisconfigWarning>('cors-misconfig')
+  const JWTs = StorageReader<JWTMessage>(storageKey.jwt)
+  const vulnCook = StorageReader<InsecureCookieHeader>(
+    storageKey.insecureCookie
+  )
+  const antiClickjack = StorageReader<AntiClickjackWarning>(
+    storageKey.antiClickjack
+  )
+  const corsMis = StorageReader<corsMisconfigWarning>(storageKey.corsMisconfig)
 
   return (
     <>

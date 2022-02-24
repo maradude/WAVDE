@@ -13,7 +13,7 @@
  * WASC-14: Server Misconfiguration
  */
 
-import { BaseWarning, save } from './utilities'
+import { BaseWarning, save, storageKey } from './utilities'
 
 const findCORSAllow = (
   res: chrome.webRequest.WebResponseHeadersDetails
@@ -55,7 +55,7 @@ interface corsMisconfigWarning extends BaseWarning {
 
 const saveCorsMisconfig = (data: corsMisconfigWarning) => {
   console.log('Found CORS misconfig', data)
-  save(data, 'cors-misconfig')
+  save(data, storageKey.corsMisconfig)
 }
 
 export { saveCorsMisconfig, findCORSAllow }

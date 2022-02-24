@@ -25,12 +25,12 @@ export interface BaseWarning {
   url: string
 }
 
-export type storageKey =
-  | 'jwt'
-  | 'insecure-cookie'
-  | 'anti-clickjack'
-  | 'cors-misconfig'
-
+export enum storageKey {
+  jwt = 'jwt',
+  insecureCookie = 'insecure-cookie',
+  antiClickjack = 'anti-clickjack',
+  corsMisconfig = 'cors-misconfig',
+}
 /**
  * Save data to local storage array assigned to key
  *

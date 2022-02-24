@@ -1,4 +1,4 @@
-import { BaseWarning, save } from './utilities'
+import { BaseWarning, save, storageKey } from './utilities'
 
 const JWTRe = /([A-Za-z0-9-_]{4,})\.([A-Za-z0-9-_]{3,})\.([A-Za-z0-9-_]{3,})/g // match JWT, group by section, only header mandatory
 
@@ -59,7 +59,7 @@ const saveJWT = (
     initiator: req.initiator ?? null,
   }
   console.log('JWT FOUND', data)
-  save(data, 'jwt')
+  save(data, storageKey.jwt)
 }
 type HeaderMarker = 'R' | 'H'
 
