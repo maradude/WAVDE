@@ -93,6 +93,7 @@ const onWebResponseHeader = (
     searchForSecurityTagsMissing(res, header.name, header.value)
   })
 }
+
 const onSendHeadersHandler = (
   req: chrome.webRequest.WebRequestHeadersDetails
 ) => {

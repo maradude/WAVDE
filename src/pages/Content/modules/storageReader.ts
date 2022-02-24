@@ -26,15 +26,15 @@ const StorageReader = <T extends StorageMessage>(
 
   useEffect(() => {
     /** set initial state */
-    const save = async () => {
+    const innerAsyncFunc = async () => {
       const data = await chrome.storage.local.get({ [matchKey]: [] })
       saveData(data[matchKey])
     }
-    save()
+    innerAsyncFunc()
   }, [matchKey, saveData])
 
   useEffect(() => {
-    /** event handler for storage chagnes */
+    /** event handler for storage changes */
     function onMessage(
       this: { key: string },
       changes: { [key: string]: chrome.storage.StorageChange },

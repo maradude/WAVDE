@@ -67,6 +67,7 @@ export const checkAntiClickjack = (
     return 'invalid XFO value'
   }
   console.error('should be impossible', res)
+  return
 }
 
 export type AntiClickjackError =

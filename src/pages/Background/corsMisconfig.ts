@@ -43,6 +43,7 @@ const findCORSAllow = (
       initiator: res.initiator ?? null,
     }
   }
+  return
 }
 
 type corsMisconfigError = 'overly permissive CORS allow' | 'SOP disabled'
