@@ -9,20 +9,23 @@ import JWTTable from '../readers/jwt_reader/JWTTable'
 import InsecureCookieTable from '../readers/insecure_cookie/insecureCookie'
 import AntiClickjackTable from '../readers/antiClickjack/antiClickjackTable'
 import CorsMisconfigTable from '../readers/cors_misconfig/CORSMisconfigTable'
+import SitesVisitedTable from '../readers/sitesVisited/SitesVisitedTable'
 import StorageReader, { IStorageReader } from '../storageReader'
 import { JWTMessage } from '../../../Background/jwt'
 import { InsecureCookieHeader } from '../../../Background/insecureCookies'
 import { corsMisconfigWarning } from '../../../Background/corsMisconfig'
 import { AntiClickjackWarning } from '../../../Background/antiClickjack'
-import { BaseWarning, storageKey } from '../../../Background/utilities'
+import { StorageMessage, storageKey } from '../../../Background/utilities'
+import { mainFrameURL } from '../../../Background/saveURL'
 
 type WarningType =
   | JWTMessage
   | InsecureCookieHeader
   | AntiClickjackWarning
   | corsMisconfigWarning
+  | mainFrameURL
 
-type ToWarningHandler<Type> = Type extends BaseWarning
+type ToWarningHandler<Type> = Type extends StorageMessage
   ? IStorageReader<Type>
   : never
 
@@ -35,12 +38,7 @@ type WarningButtonProps = {
   children: React.ReactNode
 }
 
-const WarningButton = ({
-  name,
-  handler,
-  rootRef,
-  children,
-}: WarningButtonProps) => {
+const Warning = ({ name, handler, rootRef, children }: WarningButtonProps) => {
   return (
     <WarningReader name={name} count={handler.data.length} rootRef={rootRef}>
       {children}
@@ -64,29 +62,25 @@ const Warnings = ({ rootRef }: WarningProps) => {
     storageKey.antiClickjack
   )
   const corsMis = StorageReader<corsMisconfigWarning>(storageKey.corsMisconfig)
+  const mainFrameURLs = StorageReader<mainFrameURL>(storageKey.mainFrame)
 
   return (
     <>
-      <WarningButton name="JWT" handler={JWTs} rootRef={rootRef}>
+      <Warning name="JWT" handler={JWTs} rootRef={rootRef}>
         <JWTTable data={JWTs.data} />
-      </WarningButton>
-      <WarningButton
-        name="Unsecure cookie"
-        handler={vulnCook}
-        rootRef={rootRef}
-      >
+      </Warning>
+      <Warning name="Unsecure cookie" handler={vulnCook} rootRef={rootRef}>
         <InsecureCookieTable data={vulnCook.data} />
-      </WarningButton>
-      <WarningButton
-        name="Anti Clickjack"
-        handler={antiClickjack}
-        rootRef={rootRef}
-      >
+      </Warning>
+      <Warning name="Anti Clickjack" handler={antiClickjack} rootRef={rootRef}>
         <AntiClickjackTable data={antiClickjack.data} />
-      </WarningButton>
-      <WarningButton name="CORS Misconfig" handler={corsMis} rootRef={rootRef}>
+      </Warning>
+      <Warning name="CORS Misconfig" handler={corsMis} rootRef={rootRef}>
         <CorsMisconfigTable data={corsMis.data} />
-      </WarningButton>
+      </Warning>
+      <Warning name="URLs visited" handler={mainFrameURLs} rootRef={rootRef}>
+        <SitesVisitedTable data={mainFrameURLs.data} />
+      </Warning>
     </>
   )
 }

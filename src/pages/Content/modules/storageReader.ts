@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import type { BaseWarning, storageKey } from '../../Background/utilities'
+import type { StorageMessage, storageKey } from '../../Background/utilities'
 
-type IStorageReader<T extends BaseWarning> = {
+type IStorageReader<T extends StorageMessage> = {
   data: T[]
   clear: () => void
 }
@@ -12,7 +12,7 @@ type IStorageReader<T extends BaseWarning> = {
  * @param matchKey
  * @returns IStorageReader<T>
  */
-const StorageReader = <T extends BaseWarning>(
+const StorageReader = <T extends StorageMessage>(
   matchKey: storageKey
 ): IStorageReader<T> => {
   const [data, saveData] = useState<T[]>([])

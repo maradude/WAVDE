@@ -2,7 +2,8 @@ import type { JWTMessage } from './jwt'
 
 const apiURL = 'http://localhost:3001/'
 
-const ourURL = (url: string) => url === apiURL
+const ourURL = (url: string) =>
+  url === apiURL || url.startsWith('chrome-extension://')
 
 const send = async (data: JWTMessage) => {
   // data : { url, type, name, value })
@@ -20,9 +21,12 @@ const send = async (data: JWTMessage) => {
   }
 }
 
-export interface BaseWarning {
-  initiator: string | null
+export type StorageMessage = {
   url: string
+}
+
+export type BaseWarning = StorageMessage & {
+  initiator: string | null
 }
 
 export enum storageKey {
@@ -30,6 +34,7 @@ export enum storageKey {
   insecureCookie = 'insecure-cookie',
   antiClickjack = 'anti-clickjack',
   corsMisconfig = 'cors-misconfig',
+  mainFrame = 'main-frame-url',
 }
 /**
  * Save data to local storage array assigned to key
@@ -38,7 +43,7 @@ export enum storageKey {
  * @param key
  * @returns Promise<void>
  */
-const save = async (data: BaseWarning, key: storageKey): Promise<void> => {
+async function save<T extends StorageMessage>(data: T, key: storageKey) {
   const stored = await chrome.storage.local.get({ [key]: [] })
   stored[key].push(data)
   return chrome.storage.local.set(stored)
