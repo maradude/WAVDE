@@ -1,8 +1,13 @@
-const db = require('../sqlite3')()
+const db = require("../sqlite3")()
 
-
-const save = (ip, jwt) => {
-    db.run("INSERT INTO jwts (ip, jwt) VALUES (?, ?)", [ip, jwt])
+const save = (ip, jwt, type, name, url) => {
+  db.run("INSERT INTO jwts (ip, jwt, type, name, url) VALUES (?, ?, ?, ?, ?)", [
+    ip,
+    jwt,
+    type,
+    name,
+    url,
+  ])
 }
 
 module.exports = { save }
