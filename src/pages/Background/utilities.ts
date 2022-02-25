@@ -1,32 +1,27 @@
-import type { JWTMessage } from './jwt'
-
 const apiURL = 'http://localhost:3001/'
+const crxURLprefix = 'chrome-extension://'
 
-const ourURL = (url: string) =>
-  url === apiURL || url.startsWith('chrome-extension://')
+const ourURL = (url: string) => url === apiURL || url.startsWith(crxURLprefix)
 
-const send = async (data: JWTMessage) => {
-  // data : { url, type, name, value })
+const send = async <T extends BaseWarning>(data: T) => {
+  const init = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  }
   try {
-    const rawResponse = await fetch(apiURL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
+    const rawResponse = await fetch(apiURL, init)
     console.debug(await rawResponse.text())
   } catch (error) {
-    console.debug(error)
+    console.error(error)
   }
 }
 
-export type StorageMessage = {
+export type BaseWarning = {
   url: string
-}
-
-export type BaseWarning = StorageMessage & {
-  initiator: string | null
+  initiator?: string
 }
 
 export enum storageKey {
@@ -43,7 +38,7 @@ export enum storageKey {
  * @param key
  * @returns Promise<void>
  */
-async function save<T extends StorageMessage>(data: T, key: storageKey) {
+async function save<T extends BaseWarning>(data: T, key: storageKey) {
   const stored = await chrome.storage.local.get({ [key]: [] })
   stored[key].push(data)
   return chrome.storage.local.set(stored)

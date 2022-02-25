@@ -15,7 +15,7 @@ import { JWTMessage } from '../../../Background/jwt'
 import { InsecureCookieHeader } from '../../../Background/insecureCookies'
 import { corsMisconfigWarning } from '../../../Background/corsMisconfig'
 import { AntiClickjackWarning } from '../../../Background/antiClickjack'
-import { StorageMessage, storageKey } from '../../../Background/utilities'
+import { BaseWarning, storageKey } from '../../../Background/utilities'
 import { mainFrameURL } from '../../../Background/saveURL'
 
 type WarningType =
@@ -25,7 +25,7 @@ type WarningType =
   | corsMisconfigWarning
   | mainFrameURL
 
-type ToWarningHandler<Type> = Type extends StorageMessage
+type ToWarningHandler<Type> = Type extends BaseWarning
   ? IStorageReader<Type>
   : never
 

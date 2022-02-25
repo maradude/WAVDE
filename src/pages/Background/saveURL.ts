@@ -1,6 +1,6 @@
-import { save, storageKey, StorageMessage } from './utilities'
+import { save, storageKey, BaseWarning } from './utilities'
 
-export interface mainFrameURL extends StorageMessage {
+export interface mainFrameURL extends BaseWarning {
   timeStamp: number
 }
 
