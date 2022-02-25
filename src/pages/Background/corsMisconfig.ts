@@ -40,7 +40,7 @@ const findCORSAllow = (
       requestType: res.type,
       error: 'SOP disabled',
       value: acao.value,
-      initiator: res.initiator ?? null,
+      initiator: res.initiator,
     }
   }
   return

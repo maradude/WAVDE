@@ -35,7 +35,7 @@ export const saveInsecureCookie = (
     value,
     missingTags,
     url: res.url,
-    initiator: res.initiator ?? null,
+    initiator: res.initiator,
   }
   console.log('Insecure cookie found', data)
   save(data, storageKey.insecureCookie)

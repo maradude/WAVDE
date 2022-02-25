@@ -9,7 +9,7 @@ type corsMisconfigTableProps = {
     value: string
     error: corsMisconfigWarning['error']
     requestType: string
-    initiator: string | null
+    initiator?: string
     url: string
   }[]
 }

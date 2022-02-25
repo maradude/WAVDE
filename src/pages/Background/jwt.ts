@@ -56,7 +56,7 @@ const saveJWT = (
     url: req.url,
     type,
     name,
-    initiator: req.initiator ?? null,
+    initiator: req.initiator,
   }
   console.log('JWT FOUND', data)
   save(data, storageKey.jwt)
