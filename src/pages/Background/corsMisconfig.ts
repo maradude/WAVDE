@@ -37,7 +37,6 @@ const findCORSAllow = (
   if (acao.value === '*') {
     return {
       url: res.url,
-      requestType: res.type,
       error: 'SOP disabled',
       value: acao.value,
       initiator: res.initiator,

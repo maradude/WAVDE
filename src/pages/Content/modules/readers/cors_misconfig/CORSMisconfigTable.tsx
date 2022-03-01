@@ -8,7 +8,6 @@ type corsMisconfigTableProps = {
   data: {
     value: string
     error: corsMisconfigWarning['error']
-    requestType: string
     initiator?: string
     url: string
   }[]
@@ -27,7 +26,7 @@ const CorsMisconfigTable = ({ data }: corsMisconfigTableProps) => {
       <span>Looking for overly permissive CORS allow headers</span>
       <BasicTable
         rows={data}
-        headers={['initiator', 'url', 'error', 'value', 'requestType']}
+        headers={['initiator', 'url', 'error', 'value']}
       />
     </div>
   )
