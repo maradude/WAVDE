@@ -1,0 +1,7 @@
+POST http://localhost:3001/
+content-type: application/json
+
+{
+    "message": {"bar": "sample", "requestid": "2", "url": "something", "timeStamp": {{$timestamp}}},
+    "warning": {"foo": "Wed, 21 Oct 2015 18:27:50 GMT"}
+}
