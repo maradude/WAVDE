@@ -23,6 +23,7 @@ secrets.*.js
 # tmp
 /tmp
 
-# ignore crawler deps and build
+# ignore crawler deps and generated
 crawler/node_modules
 crawler/build
+crawler/logs
