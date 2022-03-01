@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "build": "tsc --project ./",
+    "preinstall": "env-cmd npm install better-sqlite3@'^7.5.0' --no-save --build-from-source --sqlite3=\"$(pwd)/sqlite-amalgamation\""
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -12,7 +14,18 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
-    "morgan": "~1.9.1",
-    "sqlite3": "^5.0.2"
+    "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.4.2",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/express": "^4.17.13",
+    "@types/http-errors": "^1.8.2",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^17.0.21",
+    "@types/sqlite3": "^3.1.8",
+    "env-cmd": "^10.1.0",
+    "ts-node": "^10.5.0",
+    "typescript": "^4.5.5"
   }
 }
