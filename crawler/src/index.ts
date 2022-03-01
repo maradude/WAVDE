@@ -35,7 +35,6 @@ if (!sites) {
   addLoggerToWorker(serviceWorker)
 
   const page = await browser.newPage()
-  await page.goto('https://google.com')
   await visitSites(page, sites, TIMEOUT)
 
   await browser.close()
