@@ -15,7 +15,9 @@
     "plugin:react-hooks/recommended"
   ],
   "parser": "@typescript-eslint/parser",
-  "parserOptions": { "project": ["./tsconfig.json"] },
+  "parserOptions": {
+    "project": ["./tsconfig.json", "./crawler/tsconfig.json"]
+  },
   "plugins": ["@typescript-eslint", "react-hooks"],
 
   "globals": {
