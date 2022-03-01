@@ -21,7 +21,8 @@ TODO: xframeOptions
 - check XFO not defined by a META tag
 */
 
-import { BaseWarning, save, storageKey } from './utilities'
+import { BaseWarning, storageKey } from './utilities'
+import { saveToLocalStorage, send } from './record'
 
 const findCSP = (headers: chrome.webRequest.HttpHeader[]) => {
   return headers.find(
@@ -94,5 +95,6 @@ export const saveAntiClickjack = (
     initiator: res.initiator,
   }
   console.log('Anti Clickjack issue', data)
-  save(data, storageKey.antiClickjack)
+  saveToLocalStorage(data, storageKey.antiClickjack)
+  send(res, data, storageKey.antiClickjack)
 }

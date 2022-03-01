@@ -1,4 +1,5 @@
-import { BaseWarning, save, storageKey } from './utilities'
+import { saveToLocalStorage, send } from './record'
+import { BaseWarning, storageKey } from './utilities'
 /*
 both WASC-13: Info leakage
 CWE-1004: Sensitive Cookie Without 'HttpOnly' Flag
@@ -38,5 +39,6 @@ export const saveInsecureCookie = (
     initiator: res.initiator,
   }
   console.log('Insecure cookie found', data)
-  save(data, storageKey.insecureCookie)
+  saveToLocalStorage(data, storageKey.insecureCookie)
+  send(res, data, storageKey.insecureCookie)
 }

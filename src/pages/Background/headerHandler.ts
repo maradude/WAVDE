@@ -12,7 +12,7 @@ const searchForCORSMisconfig = (
   if (warning === undefined) {
     return
   }
-  saveCorsMisconfig(warning)
+  saveCorsMisconfig(res, warning)
 }
 
 const searchForMissingAntiClickjackHeaders = (

@@ -13,7 +13,8 @@
  * WASC-14: Server Misconfiguration
  */
 
-import { BaseWarning, save, storageKey } from './utilities'
+import { BaseWarning, storageKey } from './utilities'
+import { saveToLocalStorage, send } from './record'
 
 const findCORSAllow = (
   res: chrome.webRequest.WebResponseHeadersDetails
@@ -50,12 +51,15 @@ type corsMisconfigError = 'overly permissive CORS allow' | 'SOP disabled'
 interface corsMisconfigWarning extends BaseWarning {
   value: string
   error: corsMisconfigError
-  requestType: string
 }
 
-const saveCorsMisconfig = (data: corsMisconfigWarning) => {
+const saveCorsMisconfig = (
+  res: chrome.webRequest.WebResponseHeadersDetails,
+  data: corsMisconfigWarning
+) => {
   console.log('Found CORS misconfig', data)
-  save(data, storageKey.corsMisconfig)
+  saveToLocalStorage(data, storageKey.corsMisconfig)
+  send(res, data, storageKey.corsMisconfig)
 }
 
 export { saveCorsMisconfig, findCORSAllow }
