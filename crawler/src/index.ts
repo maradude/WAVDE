@@ -1,14 +1,14 @@
 import puppeteer from 'puppeteer-core'
 import path from 'path'
 import { enableCxtDevMode, findCxtServiceWorker } from './turnOnCXT'
-import { addLoggerToWorker } from './createLogFile'
+import { addLoggerToWorker } from './logging'
 import { visitSites } from './visitSites'
 import { getSites } from './getSites'
 
 /**
- * 10 seconds
+ * 30 seconds
  */
-const TIMEOUT = 10000
+const TIMEOUT = 30000
 /**
  * Location of benign-extension
  */
@@ -29,10 +29,14 @@ const browserOptions = {
   channel: 'chrome-canary' as puppeteer.ChromeReleaseChannel,
 }
 /**
- * path to a subset of majestic 1 million domains
+ * path to a subset of majestic 1 million domains,
+ * if launched via `npm start` then cwd will be
+ * crawlers root dir so $DOMAINS should be relative to that
  */
-const majestic10k = path.join(__dirname, '../majestic_10k_domains_only.csv')
-const sites = getSites(majestic10k)
+const domains = process.env.DOMAINS
+  ? path.resolve(process.cwd(), process.env.DOMAINS)
+  : path.join(__dirname, '../majestic_10k_domains_only.csv')
+const sites = getSites(domains)
 if (!sites) {
   throw Error('Missing URLs list')
 }
@@ -48,7 +52,7 @@ if (!sites) {
     await browser.close()
     throw Error('Service worker not found')
   }
-  addLoggerToWorker(serviceWorker)
+  await addLoggerToWorker(serviceWorker)
 
   const page = await browser.newPage()
   await visitSites(page, sites, TIMEOUT)
