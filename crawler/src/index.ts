@@ -10,7 +10,7 @@ import { getSites } from './getSites'
  */
 const TIMEOUT = 30000
 /**
- * Location of benign-extension
+ * Location of WAVDE
  */
 const pathToExtension = path.join(__dirname, '../../build')
 /**

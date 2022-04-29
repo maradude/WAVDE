@@ -16,7 +16,7 @@ const App = () => {
 }
 
 const panel = document.createElement('div')
-panel.id = 'benign-extension__hud-container'
+panel.id = 'WAVDE__hud-container'
 document.body.appendChild(panel)
 
 const target = window.document.querySelector(`#${panel.id}`)

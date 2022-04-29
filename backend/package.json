@@ -28,16 +28,16 @@
     "ts-node": "^10.5.0",
     "typescript": "^4.5.5"
   },
-  "description": "Companion to [benign-extension](https://github.com/mara42/benign-extension)",
+  "description": "Companion to [WAVDE](https://github.com/mara42/WAVDE)",
   "main": "./bin/www",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mara42/benign-extension.git"
+    "url": "git+https://github.com/mara42/WAVDE.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mara42/benign-extension/issues"
+    "url": "https://github.com/mara42/WAVDE/issues"
   },
-  "homepage": "https://github.com/mara42/benign-extension#readme"
+  "homepage": "https://github.com/mara42/WAVDE#readme"
 }

@@ -1,11 +1,11 @@
 {
-  "name": "benign_extension",
+  "name": "WAVDE",
   "version": "0.2.4",
   "description": "an innocent chrome extension",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mara42/benign-extension"
+    "url": "https://github.com/mara42/WAVDE"
   },
   "scripts": {
     "build": "node utils/build.js",

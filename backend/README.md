@@ -1,6 +1,6 @@
-# backend for benign-extension
+# backend for WAVDE
 
-Companion to [benign-extension](https://github.com/mara42/benign-extension)
+Companion to [WAVDE](https://github.com/mara42/WAVDE)
 
 Used for recording full http requests/responses outside of chrome.
 
