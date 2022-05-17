@@ -1,6 +1,6 @@
 {
-  "name": "WAVDE",
-  "version": "0.2.4",
+  "name": "wavde",
+  "version": "1.0.0",
   "description": "an innocent chrome extension",
   "license": "MIT",
   "repository": {
