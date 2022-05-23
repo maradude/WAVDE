@@ -91,49 +91,36 @@ see if any issues not mentioned here already have solutions over there.
 
 As for what requirements are recommended for this project:
 
--   Node LTS 16 and associated version NPM
+- Node LTS 16 and associated version NPM
 
 ### Installation and Running
 
 #### Extension installation and running instructions:
 
 1.  Navigate to the root of project directory, this is the directory
-    with a package.json file that states its name is wavde
-    []{#i:nav-node label="i:nav-node"}
-
+    with a package.json file that states its name is WAVDE
 2.  Run `npm install` to install the dependencies
-
 3.  Run `npm start` to build the project and start the development
-    server []{#i:npm-start label="i:npm-start"}
-
-4.  Load the extension into Chrome []{#i:load-chrome
-    label="i:load-chrome"}
-
+    server
+4.  Load the extension into Chrome
     1.  Access <chrome://extensions/>
-
     2.  Check Developer mode ON
-
     3.  Click on Load unpacked extension
-
     4.  Select the build folder inside the project directory
 
 The project should now be successfully loaded into chrome and have Hot
 Reloading for modules enabled, meaning changes to the source code of the
 background scripts should be reflected in the extensions without needing
 to reinstall the extension. For changes to Content Scripts, please
-repeat the sub-step in step
-[\[i:load-chrome\]](#i:load-chrome){reference-type="ref"
-reference="i:load-chrome"}.
+repeat the sub-step 4-1 through 4-4.
+
 
 #### The installation and running instructions for the backend server:
 
 1.  Navigate to the backend directory, this is the directory with a
     package.json file that states its name is backend
-
 2.  Run `npm install` to install the dependencies
-
 3.  Run npm build to transpile the TypeScript files to JavaScript.
-
 4.  Run `npm start` to start the server
 
 Keep the server up and it should print out received messages while
@@ -148,11 +135,8 @@ the extension installation.
 1.  Navigate to the crawler directory, this is the directory with a
     package.json file that states its name is
     \"bening-extension-crawler\"
-
 2.  Run `npm install` to install the dependencies
-
 3.  Run npm build to transpile the TypeScript files to JavaScript.
-
 4.  Run `npm start` to start the crawler.
 
 The crawler will then do it's procedure visiting each of the domains in
@@ -172,15 +156,11 @@ node_modules and be accessible to source code.
 Some notes on general extension structure:
 
 -   All your extension's code must be placed in the `src` folder.
-
 -   The manifest.json file inside the src folder overwrites the one
     inside the build folder during each build
-
 -   All background scripts are stored Background, all
-
 -   The rest of the contents are split into Content, Devtools, Options,
     Panel, Popup.
-
 -   Content directory is injected onto webpages and the other
     directories are used to render their namesakes parts of the
     extension. For example, Options changes the contents of the
